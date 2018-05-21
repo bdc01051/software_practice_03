@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context="com.example.jiwon_hae.software_practice.call.calling">
+
+    <android.support.v4.widget.Space
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="9"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3">
+
+        </Space>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:textSize = "5mm"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/input_phone_number"
+                android:background="@color/transparent"
+                android:editable = "false"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="번호 추가"
+                android:id="@+id/add_to_content_text"
+                android:gravity="center"
+                android:textColor="#45bbe6"
+                android:visibility="invisible"
+                android:layout_gravity="center"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+            <TextView
+                android:id="@+id/number_input_1"
+                android:layout_width="12mm"
+                android:text="1"
+                android:textColor="#000000"
+                android:textSize = "5mm"
+                android:gravity="center"
+                android:layout_height="12mm"
+                android:onClick="insert_no_input"
+                android:background="@drawable/round_btn_calling_no"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+            <TextView
+                android:id="@+id/number_input_2"
+                android:layout_width="12mm"
+                android:text="2"
+                android:textSize = "5mm"
+                android:textColor="#000000"
+                android:gravity="center"
+                android:onClick="insert_no_input"
+                android:layout_height="12mm"
+                android:background="@drawable/round_btn_calling_no"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+            <TextView
+                android:id="@+id/number_input_3"
+                android:layout_width="12mm"
+                android:text="3"
+                android:textColor="#000000"
+                android:textSize = "5mm"
+                android:gravity="center"
+                android:layout_height="12mm"
+                android:onClick="insert_no_input"
+                android:background="@drawable/round_btn_calling_no"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+            <TextView
+                android:id="@+id/number_input_4"
+                android:layout_width="12mm"
+                android:text="4"
+                android:textColor="#000000"
+                android:textSize = "5mm"
+                android:gravity="center"
+                android:layout_height="12mm"
+                android:onClick="insert_no_input"
+                android:background="@drawable/round_btn_calling_no"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+            <TextView
+                android:id="@+id/number_input_5"
+                android:layout_width="12mm"
+                android:text="5"
+                android:textColor="#000000"
+                android:textSize = "5mm"
+                android:gravity="center"
+                android:onClick="insert_no_input"
+                android:layout_height="12mm"
+                android:background="@drawable/round_btn_calling_no"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+            <TextView
+                android:id="@+id/number_input_6"
+                android:layout_width="12mm"
+                android:text="6"
+                android:textColor="#000000"
+                android:textSize = "5mm"
+                android:gravity="center"
+                android:layout_height="12mm"
+                android:onClick="insert_no_input"
+                android:background="@drawable/round_btn_calling_no"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+            <TextView
+                android:id="@+id/number_input_7"
+                android:layout_width="12mm"
+                android:text="7"
+                android:textColor="#000000"
+                android:textSize = "5mm"
+                android:gravity="center"
+                android:layout_height="12mm"
+                android:onClick="insert_no_input"
+                android:background="@drawable/round_btn_calling_no"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+            <TextView
+                android:id="@+id/number_input_8"
+                android:layout_width="12mm"
+                android:text="8"
+                android:textColor="#000000"
+                android:textSize = "5mm"
+                android:gravity="center"
+                android:onClick="insert_no_input"
+                android:layout_height="12mm"
+                android:background="@drawable/round_btn_calling_no"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+            <TextView
+                android:id="@+id/number_input_9"
+                android:layout_width="12mm"
+                android:text="9"
+                android:textColor="#000000"
+                android:textSize = "5mm"
+                android:gravity="center"
+                android:layout_height="12mm"
+                android:onClick="insert_no_input"
+                android:background="@drawable/round_btn_calling_no"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+            <TextView
+                android:id="@+id/number_input_star"
+                android:layout_width="12mm"
+                android:text="*"
+                android:textColor="#000000"
+                android:textSize = "5mm"
+                android:gravity="center"
+                android:layout_height="12mm"
+                android:onClick="insert_no_input"
+                android:background="@drawable/round_btn_calling_no"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+            <TextView
+                android:id="@+id/number_input_0"
+                android:layout_width="12mm"
+                android:text="0"
+                android:textColor="#000000"
+                android:textSize = "5mm"
+                android:gravity="center"
+                android:onClick="insert_no_input"
+                android:layout_height="12mm"
+                android:background="@drawable/round_btn_calling_no"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+            <TextView
+                android:id="@+id/number_input_sharp"
+                android:layout_width="12mm"
+                android:text="#"
+                android:textColor="#000000"
+                android:textSize = "5mm"
+                android:gravity="center"
+                android:layout_height="12mm"
+                android:onClick="insert_no_input"
+                android:background="@drawable/round_btn_calling_no"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"></Space>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/call"
+                    android:layout_width="12mm"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:onClick="insert_no_input"
+                    android:layout_height="12mm"
+                    android:layout_gravity="center"
+                    android:background="@drawable/round_btn_calling_no"
+                    />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/delete_button"
+                    android:layout_width="6mm"
+                    android:layout_height="6mm"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:onClick="insert_no_input"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:layout_marginRight="2mm"
+                    android:visibility="invisible"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3">
+
+        </Space>
+
+
+    </LinearLayout>
+
+    <android.support.v4.widget.Space
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+</LinearLayout>

@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.jiwon_hae.software_practice.main"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="8">
+
+            <Space
+                android:layout_width="2mm"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Application "
+                android:textSize="20dp"
+                android:textColor="@color/orange"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textColor="@color/dark_gray"
+                android:textSize="20dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/user_profile_picture"
+                android:layout_width="5mm"
+                android:layout_height="5mm" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:orientation="vertical"
+            android:background="@color/main_color">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today's schedule"
+                android:textColor="@color/text_blue"
+                android:textSize="16dp"
+                android:gravity="bottom"
+                android:layout_gravity="center_horizontal"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                </Space>
+
+                <TextView
+                    android:id="@+id/schedule_time_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text = "00:00"
+                    android:textColor="@color/text_blue"
+                    android:textSize="80dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/schedule_time_AMPM_textView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:text = "AM"
+                    android:textColor="@color/text_blue"
+                    android:textSize="20dp"
+                    android:layout_alignRight="@+id/schedule_time_textView"
+                    android:layout_alignBottom="@+id/schedule_time_textView"/>
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0.5mm" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="7"
+                    android:layout_height="wrap_content"
+                    android:text="This week"
+                    android:layout_gravity="bottom"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="8mm"
+                android:layout_gravity="center"
+                android:gravity="center_vertical">
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_btn_sunday"
+                    android:layout_width="5.5mm"
+                    android:layout_height="5.5mm"
+                    android:textOff="S"
+                    android:textOn="S"
+                    android:tag="sunday"
+                    android:onClick="setToggleActions"
+                    android:textColor="@drawable/toggle_btn_weekends_textcolor"
+                    android:background="@drawable/toggle_btn_weekends"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_btn_monday"
+                    android:layout_width="5.5mm"
+                    android:layout_height="5.5mm"
+                    android:onClick="setToggleActions"
+                    android:tag="monday"
+                    android:textColor="@drawable/toggle_btn_weekdays_textcolor"
+                    android:background="@drawable/toggle_btn_weekdays"
+                    android:textOff="M"
+                    android:textOn="M"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_btn_tuesday"
+                    android:layout_width="5.5mm"
+                    android:layout_height="5.5mm"
+                    android:tag="tuesday"
+                    android:onClick="setToggleActions"
+                    android:textColor="@drawable/toggle_btn_weekdays_textcolor"
+                    android:background="@drawable/toggle_btn_weekdays"
+                    android:textOff="T"
+                    android:textOn="T"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_btn_wednesday"
+                    android:layout_width="5.5mm"
+                    android:layout_height="5.5mm"
+                    android:tag="wednesday"
+                    android:onClick="setToggleActions"
+                    android:textColor="@drawable/toggle_btn_weekdays_textcolor"
+                    android:background="@drawable/toggle_btn_weekdays"
+                    android:textOff="W"
+                    android:textOn="W" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_btn_thursday"
+                    android:layout_width="5.5mm"
+                    android:layout_height="5.5mm"
+                    android:tag="thursday"
+                    android:onClick="setToggleActions"
+                    android:textColor="@drawable/toggle_btn_weekdays_textcolor"
+                    android:background="@drawable/toggle_btn_weekdays"
+                    android:textOff="T"
+                    android:textOn="T"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_btn_friday"
+                    android:layout_width="5.5mm"
+                    android:layout_height="5.5mm"
+                    android:tag="friday"
+                    android:onClick="setToggleActions"
+                    android:textColor="@drawable/toggle_btn_weekdays_textcolor"
+                    android:background="@drawable/toggle_btn_weekdays"
+                    android:textOff="F"
+                    android:textOn="F"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_btn_saturday"
+                    android:layout_width="5.5mm"
+                    android:layout_height="5.5mm"
+                    android:tag="saturday"
+                    android:onClick="setToggleActions"
+                    android:textColor="@drawable/toggle_btn_weekends_textcolor"
+                    android:background="@drawable/toggle_btn_weekends"
+                    android:textOff="S"
+                    android:textOn="S"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5.5"
+            android:layout_gravity="center_horizontal|bottom">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="5"
+                    android:orientation="horizontal"
+                    android:background="@color/main_color">
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="match_parent" />
+
+                    <ListView
+                        android:id="@+id/schedule_listView"
+                        android:layout_width="0dp"
+                        android:layout_weight="7"
+                        android:divider="@color/transparent"
+                        android:background="@color/transparent"
+                        android:layout_height="match_parent">
+
+                    </ListView>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2.5">
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent" />
+
+                    <ImageButton
+                        android:id="@+id/set_alocohol_imageButton"
+                        android:layout_width="8mm"
+                        android:layout_height="8mm"
+                        android:padding="2mm"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
+                        android:background="@drawable/main_navigation_btn"/>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent" />
+
+                    <ImageButton
+                        android:id="@+id/set_faceTalk_imageButton"
+                        android:layout_width="8mm"
+                        android:layout_height="8mm"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
+                        android:padding="2mm"
+                        android:background="@drawable/main_navigation_btn"/>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent" />
+
+                    <ImageButton
+                        android:id="@+id/set_navigation_imageButton"
+                        android:layout_width="8mm"
+                        android:layout_height="8mm"
+                        android:layout_gravity="center"
+                        android:padding="2mm"
+                        android:scaleType="centerInside"
+                        android:background="@drawable/main_navigation_btn"/>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:layout_width="13mm"
+                android:layout_height="13mm"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="14mm"
+                android:text="TIME"
+                android:textColor="@color/white"
+                android:background="@drawable/set_time_round_btn"/>
+
+        </FrameLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

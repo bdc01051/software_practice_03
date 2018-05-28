@@ -35,11 +35,6 @@ public class main extends AppCompatActivity {
     //Permission
     private static int REQUEST_LOCATION_PERMISSION = 1;
 
-    // Used to load the 'native-lib' library on application startup.
-    static {
-        System.loadLibrary("native-lib");
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +51,6 @@ public class main extends AppCompatActivity {
         main_display_adapter = new main_listview_adapter(this);
         main_schedule_display.setAdapter(main_display_adapter);
 
-        // Example of a call to a native method
     }
 
     @Override
@@ -144,7 +138,6 @@ public class main extends AppCompatActivity {
 
             }
         });
-
     }
 
     private ArrayList<ToggleButton> toggleButtonArrayList = new ArrayList<>();
@@ -269,11 +262,8 @@ public class main extends AppCompatActivity {
                 check_off_toggleButtons("sat", toggleButtonArrayList);
                 main_display_adapter.update_schedule_display(view.getTag().toString());
                 break;
-
         }
-
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -289,15 +279,6 @@ public class main extends AppCompatActivity {
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
-
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
 }

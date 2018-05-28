@@ -1,10 +1,15 @@
 package com.example.jiwon_hae.software_practice;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -31,7 +36,6 @@ public class main extends AppCompatActivity {
     //Listview
     main_listview_adapter main_display_adapter;
 
-
     //Permission
     private static int REQUEST_LOCATION_PERMISSION = 1;
 
@@ -53,11 +57,23 @@ public class main extends AppCompatActivity {
 
     }
 
+    public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9998;
+
     @Override
     protected void onResume() {
         super.onResume();
 
         getToday_day();
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(main.this, "No Permission", Toast.LENGTH_SHORT).show();
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            }
+        }
     }
 
     private void getToday_day(){

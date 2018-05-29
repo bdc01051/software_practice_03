@@ -48,5 +48,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:10.0.1'
     testCompile 'junit:junit:4.12'
     compile 'cloud.artik:artikcloud-java:2.2.2'
-    compile 'net.openid:appauth:0.7.0'
+    compile('net.openid:appauth:0.7.0') {
+        exclude group: 'com.android.support', module: 'customtabs'
+    }
 }

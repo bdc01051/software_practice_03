@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.jiwon_hae.myapplication.R;
+import com.example.jiwon_hae.software_practice.R;
 
 import java.util.ArrayList;
 

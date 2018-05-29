@@ -12,14 +12,12 @@ import com.example.jiwon_hae.software_practice.R;
 
 public class schedule extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
 
         setIconImages();
-
     }
 
     public void to_schedule_register(View view){

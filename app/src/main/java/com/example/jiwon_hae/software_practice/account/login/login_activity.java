@@ -23,6 +23,8 @@ public class login_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_activity);
 
+        getSupportActionBar().hide();
+
         do_login("sample_name", "sample_password");
     }
 

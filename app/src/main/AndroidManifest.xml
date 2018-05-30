@@ -35,11 +35,11 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".main">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--&lt;!&ndash;<action android:name="android.intent.action.MAIN" />&ndash;&gt;-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--&lt;!&ndash;<category android:name="android.intent.category.LAUNCHER" />&ndash;&gt;-->
+            <!--</intent-filter>-->
         </activity>
 
         <activity android:name=".call.calling" />
@@ -52,6 +52,36 @@
         <activity android:name=".schedule.schedule" />
         <activity android:name=".schedule.create_schedule" />
         <activity android:name=".account.login.login_activity"></activity>
+
+
+        <activity
+            android:name=".artik.ArtikTestActivity"
+            android:label="ARTIK Cloud Test" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".artik.LoginActivity"
+            android:label="ARTIK Cloud Login" >
+            <intent-filter>
+                <action android:name="cloud.artik.example.hellocloud.ARTIKCLOUD_AUTHORIZATION_RESPONSE"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="net.openid.appauth.RedirectUriReceiverActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="cloud.artik.example.hellocloud" android:host="oauth2callback"/>
+            </intent-filter>
+        </activity>
+
     </application>
 
 

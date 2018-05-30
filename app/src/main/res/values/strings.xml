@@ -5,13 +5,10 @@
     <string name="hello_world">Please login to ARTIK Cloud</string>
     <string name="click">login</string>
 
-    <!-- Message activity -->
+    <!-- ARTIK Test activity -->
     <string name="play_with_messages">Play with ARTIK Cloud</string>
-    <string name="welcome_txt">Welcome </string>
-    <string name="send_btn_txt">send a message</string>
-    <string name="sendmsg_response">Response </string>
-    <string name="getlatest_btn_txt">Get the latest message</string>
-    <string name="getlatest_response_mid">id </string>
-    <string name="getlatest_response_mdata">data </string>
+    <string name="login_btn_txt">Login to ARTIK Cloud</string>
+    <string name="get_data_btn_txt">Get the latest data</string>
+    <string name="data_txt">data </string>
 
 </resources>

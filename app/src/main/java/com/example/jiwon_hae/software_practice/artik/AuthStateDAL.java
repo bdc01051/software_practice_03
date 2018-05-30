@@ -29,8 +29,8 @@ import org.json.JSONException;
 
 // Tracking authorization state and storing into the persistent storage
 class AuthStateDAL {
-    private static final String AUTH_PREFERENCES_NAME = "AuthStatePreference";
-    private static final String AUTH_STATE = "AUTH_STATE";
+    static final String AUTH_PREFERENCES_NAME = "AuthStatePreference";
+    static final String AUTH_STATE = "AUTH_STATE";
     @NonNull
     private Activity activity;
 

@@ -18,6 +18,6 @@ package com.example.jiwon_hae.software_practice.artik;
 
 class Config {
     static final String CLIENT_ID = "a7db44a32f8249eaa4b3104673082c95"; // AKA application ID
-    static final String DEVICE_ID = "0cc35b7305124039849b0417d234da31";
-    static final String REDIRECT_URI = "http://software_practice_03.artik.cloud/app/auth";
+    static final String DEVICE_ID = "0cc35b7305124039849b0417d234da31"; // Fixed now...
+    static final String REDIRECT_URI = "cloud.artik.example.hellocloud://oauth2callback";
 }

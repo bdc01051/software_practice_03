@@ -64,7 +64,7 @@
         </activity>
 
         <activity
-            android:name=".artik.LoginActivity"
+            android:name=".artik.ARTIKLoginActivity"
             android:label="ARTIK Cloud Login" >
             <intent-filter>
                 <action android:name="cloud.artik.example.hellocloud.ARTIKCLOUD_AUTHORIZATION_RESPONSE"/>

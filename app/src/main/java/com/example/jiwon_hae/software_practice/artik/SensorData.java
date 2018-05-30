@@ -18,16 +18,16 @@ import static com.example.jiwon_hae.software_practice.artik.Config.DEVICE_ID;
 
 public final class SensorData {
 
-    private final boolean presense;
+    private final boolean presence;
     private final long time;
 
-    private SensorData(boolean presense, long time) {
-        this.presense = presense;
+    private SensorData(boolean presence, long time) {
+        this.presence = presence;
         this.time = time;
     }
 
     public boolean isPresent() {
-        return presense;
+        return presence;
     }
     public long getTime() {
         return time;

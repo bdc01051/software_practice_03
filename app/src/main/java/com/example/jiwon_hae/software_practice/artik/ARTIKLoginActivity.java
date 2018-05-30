@@ -24,9 +24,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.jiwon_hae.software_practice.R;
@@ -41,7 +38,7 @@ import net.openid.appauth.TokenResponse;
 import static com.example.jiwon_hae.software_practice.artik.AuthHelper.INTENT_ARTIKCLOUD_AUTHORIZATION_RESPONSE;
 import static com.example.jiwon_hae.software_practice.artik.AuthHelper.USED_INTENT;
 
-public class LoginActivity extends Activity {
+public class ARTIKLoginActivity extends Activity {
 
     private AuthorizationService mAuthorizationService;
 
@@ -51,8 +48,6 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         mAuthorizationService = new AuthorizationService(this);
-
-        Log.i("LoginActivity", "onCreate complete");
     }
 
     private void doAuth() {
@@ -61,20 +56,18 @@ public class LoginActivity extends Activity {
         PendingIntent authorizationIntent = PendingIntent.getActivity(
                 this,
                 authorizationRequest.hashCode(),
-                new Intent(INTENT_ARTIKCLOUD_AUTHORIZATION_RESPONSE, null, this, LoginActivity.class),
+                new Intent(INTENT_ARTIKCLOUD_AUTHORIZATION_RESPONSE, null, this, ARTIKLoginActivity.class),
                 0);
 
         /* request sample with custom tabs */
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
         CustomTabsIntent customTabsIntent = builder.build();
 
-        Log.i("LoginActivity", "performing auth...");
         mAuthorizationService.performAuthorizationRequest(authorizationRequest, authorizationIntent, customTabsIntent);
     }
 
     @Override
     protected void onStart() {
-        Log.i("LoginActivity", "Entering onStart...");
         super.onStart();
         checkIntent(getIntent());
     }
@@ -91,26 +84,17 @@ public class LoginActivity extends Activity {
     }
 
     private void checkIntent(@Nullable Intent intent) {
-        Log.i("LoginActivity", "intent checking...");
 
         if (intent != null) {
             String action = intent.getAction();
-            if(action == null) {
-                Log.i("LoginActivity", "action is null!");
-                doAuth();
-            }
+            if(action == null) doAuth();
             else {
                 switch (action) {
                     case INTENT_ARTIKCLOUD_AUTHORIZATION_RESPONSE:
-                        Log.i("LoginActivity", "artik cloud auth response");
                         if (!intent.hasExtra(USED_INTENT)) {
                             handleAuthorizationResponse(intent);
                             intent.putExtra(USED_INTENT, true);
                         }
-                        break;
-                    case Intent.ACTION_DEFAULT:
-                        Log.i("LoginActivity", "default");
-                        doAuth();
                         break;
                 }
             }
@@ -118,13 +102,11 @@ public class LoginActivity extends Activity {
     }
 
     private void handleAuthorizationResponse(@NonNull Intent intent) {
-        Log.i("LoginActivity", "handle auth response");
         AuthorizationResponse response = AuthorizationResponse.fromIntent(intent);
         AuthorizationException error = AuthorizationException.fromIntent(intent);
 
         if (response != null) {
             if (response.authorizationCode != null ) { // Authorization Code method: succeeded to get code
-                Log.i("LoginActivity", "got code!");
                 final AuthState authState = new AuthState(response, error);
 
                 // File 2nd call to get the token

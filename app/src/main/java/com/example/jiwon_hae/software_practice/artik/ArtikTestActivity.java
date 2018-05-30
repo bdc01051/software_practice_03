@@ -26,7 +26,7 @@ public class ArtikTestActivity extends Activity {
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startLoginActivity();
+                startARTIKLoginActivity();
             }
         });
 
@@ -50,8 +50,8 @@ public class ArtikTestActivity extends Activity {
 
     }
 
-    private void startLoginActivity () {
-        Intent intent = new Intent(this, LoginActivity.class);
+    private void startARTIKLoginActivity() {
+        Intent intent = new Intent(this, ARTIKLoginActivity.class);
         startActivity(intent);
     }
 

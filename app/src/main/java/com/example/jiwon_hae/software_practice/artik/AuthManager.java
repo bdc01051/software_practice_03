@@ -17,15 +17,20 @@ public final class AuthManager {
     private static final String AUTH_PREFERENCES_NAME = "AuthStatePreference";
     private static final String AUTH_STATE = "AUTH_STATE";
 
+    // AuthManager should NOT be instantiated; it must be shared.
     private AuthManager () {}
 
+    // Shared Preferences Initializer
+    // must be called before any artik-related processes.
+    // it does not need to be done on every activity or service; it is enough to once.
     public static void init (Activity a) {
         preferences = a.getSharedPreferences(AUTH_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
     public static void init (Service s) {
-        preferences = s.getSharedPreferences(AuthStateDAL.AUTH_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        preferences = s.getSharedPreferences(AUTH_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
+    // Current Auth State Getter
     public static AuthState getAuthState () {
         String str = preferences.getString(AUTH_STATE, null);
 
@@ -38,12 +43,15 @@ public final class AuthManager {
         return new AuthState();
     }
 
+    // Auth State Setter
     public static void saveAuthState (@NonNull AuthState state) {
         preferences .edit()
                     .putString(AUTH_STATE, state.jsonSerializeString())
                     .apply();
     }
 
+    // Auth State Cleaner
+    // ex) logout from ARTIK cloud
     public static void resetAuthState () {
         preferences .edit()
                     .remove(AUTH_STATE)

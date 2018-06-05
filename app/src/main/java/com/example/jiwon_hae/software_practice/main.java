@@ -28,6 +28,7 @@ import com.example.jiwon_hae.software_practice.account.create_account.volley.cre
 import com.example.jiwon_hae.software_practice.account.create_account.volley.request_check_email;
 import com.example.jiwon_hae.software_practice.artik.SensorData;
 import com.example.jiwon_hae.software_practice.artik.SensorDataListener;
+import com.example.jiwon_hae.software_practice.drunk_check.drunk_check;
 import com.example.jiwon_hae.software_practice.schedule.at_main.main_listview_adapter;
 import com.example.jiwon_hae.software_practice.schedule.schedule;
 import com.example.jiwon_hae.software_practice.tmap.map_navigation;
@@ -223,11 +224,11 @@ public class main extends AppCompatActivity {
             }
         });
 
-        this.drunkcheck_btn = (ImageButton)findViewById(R.id.set_faceTalk_imageButton);
+        this.drunkcheck_btn = (ImageButton)findViewById(R.id.set_drunkcheck_imageButton);
         this.drunkcheck_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent to_drunckcheck = new Intent(main.this, create_account.class);
+                Intent to_drunckcheck = new Intent(main.this, drunk_check.class);
                 startActivity(to_drunckcheck);
             }
         });

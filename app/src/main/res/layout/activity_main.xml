@@ -341,7 +341,7 @@
                         android:layout_height="match_parent" />
 
                     <ImageButton
-                        android:id="@+id/set_faceTalk_imageButton"
+                        android:id="@+id/set_drunkcheck_imageButton"
                         android:layout_width="8mm"
                         android:layout_height="8mm"
                         android:layout_gravity="center"
@@ -373,6 +373,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/drunk_check"
                 android:layout_width="13mm"
                 android:layout_height="13mm"
                 android:gravity="center"

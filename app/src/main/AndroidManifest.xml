@@ -62,7 +62,7 @@
                 <data android:scheme="cloud.artik.example.hellocloud" android:host="oauth2callback"/>
             </intent-filter>
         </activity>
-
+        <activity android:name=".drunk_check.drunk_check" />
         <activity android:name=".call.calling" />
         <activity android:name=".call.video_call.video_call" />
         <activity android:name=".tmap.map_navigation" />

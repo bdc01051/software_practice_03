@@ -34,6 +34,7 @@ public final class SensorData {
     }
 
     public static void requestData (final SensorDataListener listener) {
+
         String accessToken = AuthManager.getAuthState().getAccessToken();
         ApiClient client = new ApiClient();
         client.setAccessToken(accessToken);

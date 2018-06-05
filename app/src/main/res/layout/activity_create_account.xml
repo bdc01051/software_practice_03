@@ -205,15 +205,37 @@
 
         <Button
             android:id="@+id/create_acc_next"
-            android:background = "@color/white"
-            android:elevation="5mm"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="1mm"
             android:layout_gravity="center"
+            android:layout_margin="1mm"
+            android:background="@color/white"
+            android:elevation="5mm"
             android:gravity="center"
             android:text="다음"
-            android:textSize="11dp"/>
+            android:textSize="11dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="8mm"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="2mm"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/test_reset_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="1mm"
+            android:background="@color/white"
+            android:elevation="5mm"
+            android:gravity="center"
+            android:text="(TEST) RESET AUTH"
+            android:textSize="11dp" />
 
     </LinearLayout>
 

@@ -19,13 +19,20 @@ import org.json.JSONObject;
 
 public class login_activity extends AppCompatActivity {
     private ImageView logo_image;
-    private Button login_btn;
     private Button artik_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_activity);
+
+        overridePendingTransition(R.anim.fade_enter, R.anim.fade_exit);
+
+        if(AuthManager.init(this)) {
+            Intent auto_login = new Intent(login_activity.this, ARTIKLoginActivity.class);
+            auto_login.putExtra("auto_login", true);
+            startActivity(auto_login);
+        }
 
         artik_btn = (Button)findViewById(R.id.artik_btn);
         artik_btn.setOnClickListener(new View.OnClickListener() {
@@ -35,8 +42,6 @@ public class login_activity extends AppCompatActivity {
                 startActivity(to_create_acc);
             }
         });
-
-        AuthManager.init(this);
     }
 
 

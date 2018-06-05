@@ -16,7 +16,7 @@ public final class AuthManager {
 
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor preferenceEditor;
-    private static final String AUTH_PREFERENCES_NAME = "DATABASE";
+    private static final String AUTH_PREFERENCES_NAME = "ARTIK_SWPRTC3_PREF";
     private static final String AUTH_STATE = "AUTH_STATE";
 
     // AuthManager should NOT be instantiated; it must be shared.
@@ -27,12 +27,17 @@ public final class AuthManager {
     // Shared Preferences Initializer
     // must be called before any artik-related processes.
     // it does not need to be done on every activity or service; it is enough to once.
-    public static void init (Activity a) {
+    public static boolean init (Activity a) {
         preferences = a.getSharedPreferences(AUTH_PREFERENCES_NAME, Context.MODE_PRIVATE);
         preferenceEditor = preferences.edit();
+
+        return preferences.getString(AUTH_STATE, null) != null;
     }
-    public static void init (Service s) {
+    public static boolean init (Service s) {
         preferences = s.getSharedPreferences(AUTH_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        preferenceEditor = preferences.edit();
+
+        return preferences.getString(AUTH_STATE, null) != null;
     }
 
     // Current Auth State Getter
@@ -50,7 +55,7 @@ public final class AuthManager {
 
     // Auth State Setter
     public static void saveAuthState (@NonNull AuthState state) {
-        preferenceEditor.putString("auth", state.jsonSerializeString());
+        preferenceEditor.putString(AUTH_STATE, state.jsonSerializeString());
         preferenceEditor.commit();
 
     }

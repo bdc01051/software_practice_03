@@ -1,9 +1,7 @@
 package com.example.jiwon_hae.software_practice.artik;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +12,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.jiwon_hae.software_practice.R;
+import com.example.jiwon_hae.software_practice.account.login.login_activity;
 import com.example.jiwon_hae.software_practice.main;
 
 import net.openid.appauth.AuthState;
@@ -48,12 +47,11 @@ public class ARTIKLoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         mApiClient = new ApiClient();
-
         mUsersApi = new UsersApi(mApiClient);
 
         mAuthorizationService = new AuthorizationService(this);
 
-        checkIntent(getIntent());
+        if(checkIntent(getIntent())) finish();
     }
 
     private void doAuth() {
@@ -62,9 +60,7 @@ public class ARTIKLoginActivity extends Activity {
         PendingIntent authorizationIntent = PendingIntent.getActivity(
                 this,
                 authorizationRequest.hashCode(),
-                new Intent(INTENT_ARTIKCLOUD_AUTHORIZATION_RESPONSE, null, this, ARTIKLoginActivity.class),
-                0);
-
+                new Intent(INTENT_ARTIKCLOUD_AUTHORIZATION_RESPONSE, null, this, ARTIKLoginActivity.class),0);
 
         /* request sample with custom tabs */
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
@@ -84,7 +80,6 @@ public class ARTIKLoginActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -99,11 +94,21 @@ public class ARTIKLoginActivity extends Activity {
         checkIntent(intent);
     }
 
-    private void checkIntent(@Nullable Intent intent) {
+    private boolean checkIntent(@Nullable Intent intent) {
 
         if (intent != null) {
             String action = intent.getAction();
-            if(action == null) doAuth();
+            if(action == null) {
+                if(intent.hasExtra("auto_login")) {
+                    mApiClient.setAccessToken(AuthManager.getAuthState().getAccessToken());
+                    getUserInfo();
+                    return false;
+                }
+                else {
+                    doAuth();
+                    return true;
+                }
+            }
             else {
                 switch (action) {
                     case INTENT_ARTIKCLOUD_AUTHORIZATION_RESPONSE:
@@ -111,10 +116,12 @@ public class ARTIKLoginActivity extends Activity {
                             handleAuthorizationResponse(intent);
                             intent.putExtra(USED_INTENT, true);
                         }
-                        break;
+                        return false;
                 }
             }
         }
+
+        return true;
     }
 
     private void handleAuthorizationResponse(@NonNull Intent intent) {
@@ -133,7 +140,7 @@ public class ARTIKLoginActivity extends Activity {
                             authState.update(tokenResponse, exception);
                             AuthManager.saveAuthState(authState);
 
-                            mApiClient.setAccessToken(AuthManager.getAuthState().getAccessToken());
+                            mApiClient.setAccessToken(authState.getAccessToken());
                             getUserInfo();
 
                         } else {
@@ -163,7 +170,7 @@ public class ARTIKLoginActivity extends Activity {
                 public void onFailure(ApiException exc, int statusCode, Map<String, List<String>> map) {
                     processFailure(tag, exc);
 
-                    Intent to_login = new Intent(ARTIKLoginActivity.this, main.class);
+                    Intent to_login = new Intent(ARTIKLoginActivity.this, login_activity.class);
                     to_login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();
                     startActivity(to_login);
@@ -172,15 +179,13 @@ public class ARTIKLoginActivity extends Activity {
 
                 @Override
                 public void onSuccess(UserEnvelope result, int statusCode, Map<String, List<String>> map) {
-                    result.getData().getFullName();
-
-                    String user_email = result.getData().getEmail();
 
                     Intent to_main = new Intent(ARTIKLoginActivity.this, main.class);
                     to_main.putExtra("user_email", result.getData().getEmail());
                     to_main.putExtra("user_name", result.getData().getFullName());
-                    to_main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
+                    to_main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    finish();
+                    overridePendingTransition(R.anim.fade_enter, R.anim.fade_exit);
                     startActivity(to_main);
 
                     //updateWelcomeViewOnUIThread("Welcome " + result.getData().getFullName());
@@ -205,10 +210,10 @@ public class ARTIKLoginActivity extends Activity {
         String errorDetail = " onFailure with exception" + exc;
         Log.w(context, errorDetail);
         exc.printStackTrace();
-        showErrorOnUIThread(context+errorDetail, ARTIKLoginActivity.this);
+        showError(context+errorDetail, ARTIKLoginActivity.this);
     }
 
-    static void showErrorOnUIThread(final String text, final Activity activity) {
+    static void showError(final String text, final Activity activity) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {

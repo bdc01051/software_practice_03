@@ -23,6 +23,7 @@ import com.example.jiwon_hae.software_practice.account.create_account.volley.cre
 import com.example.jiwon_hae.software_practice.account.create_account.volley.request_check_email;
 import com.example.jiwon_hae.software_practice.account.create_account.volley.validate_username;
 import com.example.jiwon_hae.software_practice.account.login.login_activity;
+import com.example.jiwon_hae.software_practice.artik.AuthManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +41,7 @@ public class create_account extends AppCompatActivity {
     private Spinner create_acc_email_list;
 
     private Button next;
+    private Button test_reset;
 
     boolean final_check_email = false;
     boolean final_check_username = false;
@@ -65,6 +67,8 @@ public class create_account extends AppCompatActivity {
         checkPassword(create_acc_password, create_acc_password_recheck);
 
         next = (Button)findViewById(R.id.create_acc_next);
+        test_reset = (Button)findViewById(R.id.test_reset_btn);
+
         next.setClickable(false);
 
         if(final_check_email && final_check_pw && final_check_re_pw && final_check_username){
@@ -112,6 +116,14 @@ public class create_account extends AppCompatActivity {
                 }
 
 
+            }
+        });
+
+        test_reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AuthManager.resetAuthState();
+                Toast.makeText(create_account.this, "reset", Toast.LENGTH_LONG).show();
             }
         });
     }

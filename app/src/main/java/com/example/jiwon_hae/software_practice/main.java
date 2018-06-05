@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -29,6 +31,9 @@ import com.example.jiwon_hae.software_practice.account.create_account.create_acc
 import com.example.jiwon_hae.software_practice.account.create_account.volley.create_account_volley;
 import com.example.jiwon_hae.software_practice.account.create_account.volley.request_check_email;
 import com.example.jiwon_hae.software_practice.account.login.login_activity;
+import com.example.jiwon_hae.software_practice.artik.AuthManager;
+import com.example.jiwon_hae.software_practice.artik.SensorData;
+import com.example.jiwon_hae.software_practice.artik.SensorDataListener;
 import com.example.jiwon_hae.software_practice.schedule.at_main.main_listview_adapter;
 import com.example.jiwon_hae.software_practice.schedule.schedule;
 import com.example.jiwon_hae.software_practice.tmap.map_navigation;
@@ -55,6 +60,7 @@ public class main extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor dbEditor;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +69,8 @@ public class main extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("DATABASE", Context.MODE_PRIVATE);
         dbEditor = sharedPreferences.edit();
+
+        handler = new Handler(Looper.getMainLooper());
 
         if(getIntent().hasExtra("user_email") && getIntent().hasExtra("user_name")){
 
@@ -147,6 +155,22 @@ public class main extends AppCompatActivity {
         super.onResume();
 
         getToday_day();
+
+        Log.i("main", "sensor data request");
+
+        SensorData.requestData(new SensorDataListener() {
+            @Override
+            public void onSucceed(SensorData data) {
+                Log.i("main", "data get");
+                displayToast(data.isPresent() ? "present" : "not present");
+            }
+
+            @Override
+            public void onFail(Exception exc) {
+                Log.i("main", "data fail");
+                displayToast("failed : " + exc.getMessage());
+            }
+        });
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(main.this, "No Permission", Toast.LENGTH_SHORT).show();
@@ -376,8 +400,17 @@ public class main extends AppCompatActivity {
                 } else {
                     Toast.makeText(main.this, "Permission Denied", Toast.LENGTH_SHORT).show();
                 }
-                return;
+                break;
             }
         }
+    }
+
+    private void displayToast (final String text) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(main.this, text, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

@@ -5,10 +5,4 @@
     <string name="hello_world">Please login to ARTIK Cloud</string>
     <string name="click">login</string>
 
-    <!-- ARTIK Test activity -->
-    <string name="play_with_messages">Play with ARTIK Cloud</string>
-    <string name="login_btn_txt">Login to ARTIK Cloud</string>
-    <string name="get_data_btn_txt">Get the latest data</string>
-    <string name="data_txt">data </string>
-
 </resources>

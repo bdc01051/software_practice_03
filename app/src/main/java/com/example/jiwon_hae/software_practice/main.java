@@ -1,19 +1,15 @@
 package com.example.jiwon_hae.software_practice;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -25,14 +21,12 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
-import com.example.jiwon_hae.software_practice.account.create_account.create_account;
 import com.example.jiwon_hae.software_practice.account.create_account.volley.create_account_volley;
 import com.example.jiwon_hae.software_practice.account.create_account.volley.request_check_email;
-import com.example.jiwon_hae.software_practice.account.login.login_activity;
+import com.example.jiwon_hae.software_practice.drunk_check.drunk_check;
 import com.example.jiwon_hae.software_practice.schedule.at_main.main_listview_adapter;
 import com.example.jiwon_hae.software_practice.schedule.schedule;
 import com.example.jiwon_hae.software_practice.tmap.map_navigation;
-import com.google.gson.JsonArray;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,12 +34,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static com.example.jiwon_hae.software_practice.utility.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
-
 public class main extends AppCompatActivity {
     private ImageButton alcohol_btn;
     private ImageButton navigation_btn;
-    private ImageButton faceTallk_btn;
+    private ImageButton drunkcheck_btn;
 
     //Listview
     main_listview_adapter main_display_adapter;
@@ -211,12 +203,12 @@ public class main extends AppCompatActivity {
             }
         });
 
-        this.faceTallk_btn = (ImageButton)findViewById(R.id.set_faceTalk_imageButton);
-        this.faceTallk_btn.setOnClickListener(new View.OnClickListener() {
+        this.drunkcheck_btn = (ImageButton)findViewById(R.id.set_drunkcheck_imageButton);
+        this.drunkcheck_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent to_faceTalk = new Intent(main.this, create_account.class);
-                startActivity(to_faceTalk);
+                Intent to_drunckcheck = new Intent(main.this, drunk_check.class);
+                startActivity(to_drunckcheck);
             }
         });
 

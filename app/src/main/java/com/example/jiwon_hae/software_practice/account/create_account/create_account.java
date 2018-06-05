@@ -31,17 +31,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class create_account extends AppCompatActivity {
-    private boolean account_result = false;
-
-    private EditText email_input_edittext;
-    private EditText username_input_edittext;
-    private EditText password_input_edittext;
-
     private EditText create_acc_password;
     private EditText create_acc_password_recheck;
-
-    boolean readyToCheck = false;
-    boolean readyToRecheck = false;
 
     private EditText create_acc_email_acc;
     private EditText create_acc_email_add;
@@ -59,8 +50,6 @@ public class create_account extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
-
-        getSupportActionBar().hide();
 
         create_acc_email_acc = (EditText)findViewById(R.id.create_acc_email);
         create_acc_email_add = (EditText)findViewById(R.id.create_acc_email_add);
@@ -104,10 +93,7 @@ public class create_account extends AppCompatActivity {
 
                                 if(success){
                                     Intent to_main = new Intent(create_account.this, login_activity.class);
-                                    to_main.putExtra("intent_direction", "login");
-
                                     startActivity(to_main);
-
                                     Toast.makeText(create_account.this, "가입해주셔서 감사합니다", Toast.LENGTH_SHORT).show();
 
                                 }else{
@@ -131,76 +117,56 @@ public class create_account extends AppCompatActivity {
     }
 
     public void checkPassword(final EditText password, final EditText passwordCheck){
-        password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        final String[] pw_init = {password.getText().toString()};
+
+        password.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(v.hasFocus()){ readyToCheck = true;}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
-                if(readyToCheck && !v.hasFocus()){
-                    if(!password.getText().toString().equals("")){
-                        if(checkPassword(password.getText().toString())){
-                            final_check_pw = true;
-                            password.setTextColor(Color.BLACK);
-                        }else{
-                            final_check_pw = false;
-                            password.setTextColor(Color.RED);
-                        }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                final_check_re_pw = false;
+                passwordCheck.setTextColor(Color.RED);
+            }
 
-                        if(!password.getText().toString().equals(passwordCheck) && !passwordCheck.getText().toString().equals("")){
-                            passwordCheck.setTextColor(Color.RED);
-                        }
-                    }
+            @Override
+            public void afterTextChanged(Editable s) {
+                pw_init[0] = password.getText().toString();
+                String pw_check = passwordCheck.getText().toString();
+
+                if(checkPassword(pw_init[0])){
+                    password.setTextColor(Color.BLACK);
+                    final_check_pw = true;
+                }else{
+                    password.setTextColor(Color.RED);
+                    final_check_pw = false;
+                }
+
+                if(!pw_init[0].equals(pw_check)){
+                    passwordCheck.setTextColor(Color.RED);
+                    final_check_re_pw = false;
                 }
             }
         });
 
-        if(final_check_pw){
-            password.addTextChangedListener(new TextWatcher() {
-                String pw_init = password.getText().toString();
-
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    final_check_re_pw = false;
-                    passwordCheck.setTextColor(Color.RED);
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if(pw_init.equals(password.getText().toString())){
-                        final_check_re_pw = true;
-                        passwordCheck.setTextColor(Color.BLACK);
-                    }else{
-                        final_check_re_pw = false;
-                        passwordCheck.setTextColor(Color.RED);
-                    }
-                }
-            });
-        }
-
-        passwordCheck.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        passwordCheck.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(v.hasFocus()){ readyToRecheck = true; }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
-                if(readyToRecheck && !v.hasFocus()){
-                    if(!password.getText().toString().equals("") && !passwordCheck.getText().toString().equals("")){
-                        if(passwordCheck.getText().toString().equals(password.getText().toString())){
-                            if(final_check_pw = true){
-                                final_check_re_pw = true;
-                                passwordCheck.setTextColor(Color.BLACK);
-                            }else{
-                                passwordCheck.setTextColor(Color.RED);
-                            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
-                        }else{
-                            final_check_re_pw = false;
-                            passwordCheck.setTextColor(Color.RED);
-                        }
-                    }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String pw_check = passwordCheck.getText().toString();
+
+                if(pw_init[0].equals(pw_check)){
+                    passwordCheck.setTextColor(Color.BLACK);
+                    final_check_re_pw = true;
+                }else{
+                    passwordCheck.setTextColor(Color.RED);
+                    final_check_re_pw = false;
                 }
             }
         });
@@ -322,7 +288,6 @@ public class create_account extends AppCompatActivity {
                             public void onResponse(String response) {
                                 try{
                                     JSONObject jsonObject = new JSONObject(response);
-                                    Log.e("test", jsonObject.toString());
                                     boolean success = jsonObject.getBoolean("success");
 
                                     if(success){

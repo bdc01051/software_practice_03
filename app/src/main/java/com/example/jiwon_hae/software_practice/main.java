@@ -44,6 +44,10 @@ public class main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(getIntent().hasExtra("user_email")){
+            Toast.makeText(main.this, getIntent().getStringExtra("user_email"), Toast.LENGTH_SHORT).show();
+        }
+
         this.setImageButtons();
 
         utility Utility = new utility();

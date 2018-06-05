@@ -5,108 +5,72 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.jiwon_hae.software_practice.account.login.login_activity">
+    tools:context="com.example.jiwon_hae.software_practice.account.login.login_activity"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_weight="7"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/logo_image"
+            android:layout_width="35mm"
+            android:layout_height="35mm"
+            android:background="@drawable/logo_icon"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30mm"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="2mm"
+            android:layout_height="match_parent"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
             android:layout_weight="1"
-            android:background="@color/main_color"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="4" />
+                android:layout_height="1mm" />
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.1" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <TextView
-                        android:id="@+id/login_text_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="ID: " />
-
-                    <EditText
-                        android:id="@+id/login_input_id"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:ems="10"
-                        android:inputType="textPassword" />
-
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.1" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.1" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <TextView
-                        android:id="@+id/login_text_password"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="PW: " />
-
-                    <EditText
-                        android:id="@+id/login_input_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:ems="10"
-                        android:inputType="textPassword" />
-
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.1" />
-
-            </LinearLayout>
+            <Button
+                android:id="@+id/artik_btn"
+                android:background = "@color/white"
+                android:elevation="5mm"
+                android:layout_width="50mm"
+                android:layout_height="7mm"
+                android:layout_margin="1mm"
+                android:layout_marginTop="3mm"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="ARTIK"
+                android:textSize="11dp"/>
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="4" />
+                android:layout_height="5mm" />
 
         </LinearLayout>
+
+        <Space
+            android:layout_width="2mm"
+            android:layout_height="match_parent"/>
+
     </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="5mm" />
+
 
 </LinearLayout>

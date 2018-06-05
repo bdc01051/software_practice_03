@@ -1,32 +1,20 @@
-/*
- * Copyright (C) 2017 Samsung Electronics Co., Ltd.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.example.jiwon_hae.software_practice.artik;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.jiwon_hae.software_practice.R;
+import com.example.jiwon_hae.software_practice.main;
 
 import net.openid.appauth.AuthState;
 import net.openid.appauth.AuthorizationException;
@@ -35,19 +23,37 @@ import net.openid.appauth.AuthorizationResponse;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.TokenResponse;
 
+import java.util.List;
+import java.util.Map;
+
+import cloud.artik.api.UsersApi;
+import cloud.artik.client.ApiCallback;
+import cloud.artik.client.ApiClient;
+import cloud.artik.client.ApiException;
+import cloud.artik.model.UserEnvelope;
+
 import static com.example.jiwon_hae.software_practice.artik.AuthHelper.INTENT_ARTIKCLOUD_AUTHORIZATION_RESPONSE;
 import static com.example.jiwon_hae.software_practice.artik.AuthHelper.USED_INTENT;
 
 public class ARTIKLoginActivity extends Activity {
 
     private AuthorizationService mAuthorizationService;
+    private UsersApi mUsersApi = null;
+    private ApiClient mApiClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mApiClient = new ApiClient();
+
+        mUsersApi = new UsersApi(mApiClient);
+
         mAuthorizationService = new AuthorizationService(this);
+
+        checkIntent(getIntent());
     }
 
     private void doAuth() {
@@ -59,23 +65,33 @@ public class ARTIKLoginActivity extends Activity {
                 new Intent(INTENT_ARTIKCLOUD_AUTHORIZATION_RESPONSE, null, this, ARTIKLoginActivity.class),
                 0);
 
+
         /* request sample with custom tabs */
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
         CustomTabsIntent customTabsIntent = builder.build();
 
         mAuthorizationService.performAuthorizationRequest(authorizationRequest, authorizationIntent, customTabsIntent);
+
     }
+
+
 
     @Override
     protected void onStart() {
         super.onStart();
-        checkIntent(getIntent());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        finish();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mAuthorizationService.dispose();
     }
 
     @Override
@@ -116,6 +132,10 @@ public class ARTIKLoginActivity extends Activity {
                         if (tokenResponse != null) {
                             authState.update(tokenResponse, exception);
                             AuthManager.saveAuthState(authState);
+
+                            mApiClient.setAccessToken(AuthManager.getAuthState().getAccessToken());
+                            getUserInfo();
+
                         } else {
                             Context context = getApplicationContext();
                             CharSequence text = "Token Exchange failed";
@@ -132,5 +152,78 @@ public class ARTIKLoginActivity extends Activity {
                 }
             }
         }
+    }
+
+    private void getUserInfo()
+    {
+        final String tag = "TAG" + " getSelfAsync";
+        try {
+            mUsersApi.getSelfAsync(new ApiCallback<UserEnvelope>() {
+                @Override
+                public void onFailure(ApiException exc, int statusCode, Map<String, List<String>> map) {
+                    processFailure(tag, exc);
+
+                    Intent to_login = new Intent(ARTIKLoginActivity.this, main.class);
+                    to_login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    finish();
+                    startActivity(to_login);
+
+                }
+
+                @Override
+                public void onSuccess(UserEnvelope result, int statusCode, Map<String, List<String>> map) {
+                    result.getData().getFullName();
+
+                    String user_email = result.getData().getEmail();
+
+                    Intent to_main = new Intent(ARTIKLoginActivity.this, main.class);
+                    to_main.putExtra("user_email", result.getData().getEmail());
+                    to_main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    startActivity(to_main);
+
+                    //updateWelcomeViewOnUIThread("Welcome " + result.getData().getFullName());
+                }
+
+                @Override
+                public void onUploadProgress(long bytes, long contentLen, boolean done) {
+                }
+
+                @Override
+                public void onDownloadProgress(long bytes, long contentLen, boolean done) {
+                }
+
+            });
+        } catch (ApiException exc) {
+            processFailure(tag, exc);
+        }
+
+    }
+
+    private void processFailure(final String context, ApiException exc) {
+        String errorDetail = " onFailure with exception" + exc;
+        Log.w(context, errorDetail);
+        exc.printStackTrace();
+        showErrorOnUIThread(context+errorDetail, ARTIKLoginActivity.this);
+    }
+
+    static void showErrorOnUIThread(final String text, final Activity activity) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int duration = Toast.LENGTH_LONG;
+                Toast toast = Toast.makeText(activity.getApplicationContext(), text, duration);
+                toast.show();
+            }
+        });
+    }
+
+    private void updateWelcomeViewOnUIThread(final String text) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //mWelcome.setText(text);
+            }
+        });
     }
 }

@@ -34,34 +34,15 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".main">
-            <!--<intent-filter>-->
-                <!--&lt;!&ndash;<action android:name="android.intent.action.MAIN" />&ndash;&gt;-->
-
-                <!--&lt;!&ndash;<category android:name="android.intent.category.LAUNCHER" />&ndash;&gt;-->
-            <!--</intent-filter>-->
-        </activity>
-
-        <activity android:name=".call.calling" />
-        <activity android:name=".call.video_call.video_call" />
-        <activity android:name=".tmap.map_navigation" />
-
-        <service android:name=".tmap.location_information.drunken_person" />
-
-        <activity android:name=".account.create_account.create_account" />
-        <activity android:name=".schedule.schedule" />
-        <activity android:name=".schedule.create_schedule" />
-        <activity android:name=".account.login.login_activity"></activity>
-
-
-        <activity
-            android:name=".artik.ArtikTestActivity"
-            android:label="ARTIK Cloud Test" >
+        <activity android:name=".account.login.login_activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name =".main"></activity>
 
         <activity
             android:name=".artik.ARTIKLoginActivity"
@@ -82,6 +63,15 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".call.calling" />
+        <activity android:name=".call.video_call.video_call" />
+        <activity android:name=".tmap.map_navigation" />
+
+        <service android:name=".tmap.location_information.drunken_person" />
+
+        <activity android:name=".account.create_account.create_account" />
+        <activity android:name=".schedule.schedule" />
+        <activity android:name=".schedule.create_schedule" />
     </application>
 
 

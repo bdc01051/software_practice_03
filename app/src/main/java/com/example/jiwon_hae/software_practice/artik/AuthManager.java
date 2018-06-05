@@ -18,7 +18,9 @@ public final class AuthManager {
     private static final String AUTH_STATE = "AUTH_STATE";
 
     // AuthManager should NOT be instantiated; it must be shared.
-    private AuthManager () {}
+    private AuthManager () {
+
+    }
 
     // Shared Preferences Initializer
     // must be called before any artik-related processes.

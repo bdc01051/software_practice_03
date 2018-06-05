@@ -26,7 +26,6 @@ public class schedule extends AppCompatActivity {
         startActivity(to_create_schedule);
     }
 
-
     public void setIconImages(){
         ImageView logo_icon = (ImageView)findViewById(R.id.application_logo);
 

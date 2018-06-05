@@ -373,6 +373,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/drunk_check"
                 android:layout_width="13mm"
                 android:layout_height="13mm"
                 android:gravity="center"

@@ -29,12 +29,13 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAgJVPj3S5ug4fhOyfF7RSHbDt6KDt6kgY" />
+            android:value="AIzaSyBH3XBHkLIKP804o3OKDoBwKGwiPhTUwgs" />
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".main">
+        <activity android:name=".account.login.login_activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,7 +43,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name =".account.login.login_activity"></activity>
+        <activity android:name =".main"></activity>
 
         <activity
             android:name=".artik.ARTIKLoginActivity"

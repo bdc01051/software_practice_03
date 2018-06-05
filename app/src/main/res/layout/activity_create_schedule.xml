@@ -69,7 +69,7 @@
                     android:textSize="12dp"/>
 
                 <Space
-                    android:layout_width="1mm"
+                    android:layout_width="2dp"
                     android:layout_height="match_parent" />
 
                 <TextView
@@ -129,6 +129,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:layout_gravity="center"
                     android:textColor="@color/light_gray"
                     android:textSize="12dp"
                     android:visibility="gone"/>
@@ -165,6 +166,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:layout_gravity="center"
                 android:textColor="@color/light_gray"
                 android:textSize="12dp"/>
 
@@ -208,6 +210,7 @@
         </LinearLayout>
 
         <EditText
+            android:id="@+id/schedule_title"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.8"
@@ -222,6 +225,151 @@
             android:textColor="@color/text_blue"/>
 
     </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="2mm" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="12mm"
+        android:layout_marginLeft="3mm"
+        android:layout_marginRight="3mm"
+        android:paddingTop="1mm"
+        android:paddingBottom="1mm"
+        android:layout_marginTop="1mm"
+        android:layout_marginBottom="1mm"
+        android:elevation="1mm"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/select_venue_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="3mm"
+            android:layout_marginRight="3mm"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="8"
+                android:text="SELECT VENUE"
+                android:textSize="12dp"
+                android:gravity="center_vertical"/>
+
+            <Button
+                android:id="@+id/venue_select_btn"
+                android:layout_width="0dp"
+                android:layout_height="5mm"
+                android:layout_weight="2"
+                android:text= "SELECT"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textSize ="11dp"
+                android:background="@drawable/schedule_linearlayout_design"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/venue_layout"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="3mm"
+            android:layout_marginRight="3mm"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="8"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.2"
+                    android:text="VENUE"
+                    android:textSize="12dp"
+                    android:gravity="center_vertical"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray">
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/schedule_venue_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.8"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:textSize = "12dp"
+                    android:maxLines="1"
+                    android:inputType="textShortMessage"
+                    android:textColor="@color/text_blue"/>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/venue_select_btn_1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="2mm"
+                android:layout_marginBottom="2mm"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="2"
+                android:text= "CHANGE"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textSize ="11dp"
+                android:background="@drawable/schedule_linearlayout_design"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="2mm" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/submit_btn"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="8mm"
+            android:text= "SUBMIT"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize ="11dp"
+            android:background="@drawable/schedule_linearlayout_design"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+
 
 
 

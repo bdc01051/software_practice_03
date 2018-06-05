@@ -368,6 +368,20 @@
                         android:layout_weight="1"
                         android:layout_height="match_parent" />
 
+                    <ImageButton
+                        android:id="@+id/set_logout_imageButton"
+                        android:layout_width="8mm"
+                        android:layout_height="8mm"
+                        android:layout_gravity="center"
+                        android:padding="2mm"
+                        android:scaleType="centerInside"
+                        android:background="@drawable/main_logout_btn"/>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent" />
+
                 </LinearLayout>
 
             </LinearLayout>

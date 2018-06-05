@@ -26,7 +26,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAgJVPj3S5ug4fhOyfF7RSHbDt6KDt6kgY" />
@@ -41,25 +40,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name =".main"></activity>
-
+        <activity android:name=".main" />
         <activity
             android:name=".artik.ARTIKLoginActivity"
-            android:label="ARTIK Cloud Login" >
+            android:label="ARTIK Cloud Login">
             <intent-filter>
-                <action android:name="cloud.artik.example.hellocloud.ARTIKCLOUD_AUTHORIZATION_RESPONSE"/>
+                <action android:name="cloud.artik.example.hellocloud.ARTIKCLOUD_AUTHORIZATION_RESPONSE" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name="net.openid.appauth.RedirectUriReceiverActivity">
+        <activity android:name="net.openid.appauth.RedirectUriReceiverActivity">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <data android:scheme="cloud.artik.example.hellocloud" android:host="oauth2callback"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="oauth2callback"
+                    android:scheme="cloud.artik.example.hellocloud" />
             </intent-filter>
         </activity>
         <activity android:name=".drunk_check.drunk_check" />
@@ -72,7 +70,7 @@
         <activity android:name=".account.create_account.create_account" />
         <activity android:name=".schedule.schedule" />
         <activity android:name=".schedule.create_schedule" />
+        <activity android:name=".logout.logout"></activity>
     </application>
-
 
 </manifest>

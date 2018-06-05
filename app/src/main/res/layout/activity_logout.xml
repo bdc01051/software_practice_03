@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.jiwon_hae.software_practice.logout.logout"
+    android:orientation="vertical">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30mm" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10mm"
+        android:text="로그아웃 하시겠습니까?"
+        android:textSize = "5mm"
+        android:textColor = "#b4b4b4"
+        android:layout_marginLeft="2mm"
+        android:gravity="center"
+        android:layout_gravity="center"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="8mm" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+        <ImageButton
+            android:id="@+id/YES_btn"
+            android:layout_width="12mm"
+            android:layout_height="12mm"
+            android:padding="3mm"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:background="@drawable/main_yes_btn" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+        <ImageButton
+            android:id="@+id/NO_btn"
+            android:layout_width="12mm"
+            android:layout_height="12mm"
+            android:padding="3mm"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:background="@drawable/main_no_btn" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

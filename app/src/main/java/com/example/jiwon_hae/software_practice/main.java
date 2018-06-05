@@ -23,12 +23,12 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
-import com.example.jiwon_hae.software_practice.account.create_account.create_account;
 import com.example.jiwon_hae.software_practice.account.create_account.volley.create_account_volley;
 import com.example.jiwon_hae.software_practice.account.create_account.volley.request_check_email;
 import com.example.jiwon_hae.software_practice.artik.SensorData;
 import com.example.jiwon_hae.software_practice.artik.SensorDataListener;
 import com.example.jiwon_hae.software_practice.drunk_check.drunk_check;
+import com.example.jiwon_hae.software_practice.logout.logout;
 import com.example.jiwon_hae.software_practice.schedule.at_main.main_listview_adapter;
 import com.example.jiwon_hae.software_practice.schedule.schedule;
 import com.example.jiwon_hae.software_practice.tmap.map_navigation;
@@ -39,10 +39,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+
 public class main extends AppCompatActivity {
     private ImageButton alcohol_btn;
     private ImageButton navigation_btn;
     private ImageButton drunkcheck_btn;
+    private ImageButton logout_btn;
 
     //Listview
     main_listview_adapter main_display_adapter;
@@ -225,6 +227,12 @@ public class main extends AppCompatActivity {
         });
 
         this.drunkcheck_btn = (ImageButton)findViewById(R.id.set_drunkcheck_imageButton);
+        Glide.with(this)
+                .load(R.drawable.check_icon)
+                .thumbnail(0.5f)
+                .signature(new StringSignature("c"))
+                .into(drunkcheck_btn);
+
         this.drunkcheck_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -233,11 +241,25 @@ public class main extends AppCompatActivity {
             }
         });
 
+        this.logout_btn =(ImageButton)findViewById(R.id.set_logout_imageButton);
+        Glide.with(this)
+                .load(R.drawable.exit_icon)
+                .thumbnail(0.5f)
+                .signature(new StringSignature("d"))
+                .into(logout_btn);
+
+        this.logout_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent to_logout = new Intent(main.this, logout.class);
+                startActivity(to_logout);
+            }
+        });
 
         this.navigation_btn = (ImageButton)findViewById(R.id.set_navigation_imageButton);
         Glide.with(this)
                 .load(R.drawable.navigation_icon)
-                .thumbnail(0.3f)
+                .thumbnail(0.5f)
                 .signature(new StringSignature("b"))
                 .into(navigation_btn);
 

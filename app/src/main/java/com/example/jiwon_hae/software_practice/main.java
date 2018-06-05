@@ -65,7 +65,6 @@ public class main extends AppCompatActivity {
         handler = new Handler(Looper.getMainLooper());
 
         if(getIntent().hasExtra("user_email") && getIntent().hasExtra("user_name")){
-
             Response.Listener<String> responseListener = new Response.Listener<String>(){
                 @Override
                 public void onResponse(String response) {

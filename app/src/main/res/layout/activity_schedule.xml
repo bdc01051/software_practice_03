@@ -112,7 +112,7 @@
                         android:layout_weight="1"
                         android:layout_height="match_parent"
                         android:background="@color/transparent"
-                        android:hint="5 digits code"
+                        android:hint="8 digits code"
                         android:textColorHint="@color/light_gray"
                         android:textColor="#000000"
                         android:textSize="11dp"

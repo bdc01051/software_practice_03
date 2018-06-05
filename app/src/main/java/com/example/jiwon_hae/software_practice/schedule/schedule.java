@@ -1,6 +1,8 @@
 package com.example.jiwon_hae.software_practice.schedule;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -22,6 +24,7 @@ import com.example.jiwon_hae.software_practice.R;
 import com.example.jiwon_hae.software_practice.main;
 import com.example.jiwon_hae.software_practice.schedule.volley.check_schedule_code;
 import com.example.jiwon_hae.software_practice.schedule.volley.create_schedule_volley;
+import com.example.jiwon_hae.software_practice.schedule.volley.join_schedule_volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,15 +32,29 @@ import org.json.JSONObject;
 public class schedule extends AppCompatActivity {
     private EditText schedule_id_editText;
     private String schedule_id;
+    private String user_email;
     private Button join_schedule_btn;
     private Button create_schedule_btn;
 
     private TextView schedule_title;
 
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
+
+        sharedPreferences = getSharedPreferences("DATABASE", Context.MODE_PRIVATE);
+
+        try {
+            JSONObject jsonObject = new JSONObject(sharedPreferences.getString("DATABASE",""));
+            user_email = jsonObject.getString("user_email");
+            Log.e("username", user_email);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         schedule_title = (TextView)findViewById(R.id.schedule_title);
 
@@ -54,7 +71,7 @@ public class schedule extends AppCompatActivity {
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void onTextChanged(final CharSequence charSequence, int i, int i1, int i2) {
                 Response.Listener<String> responseListener = new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
@@ -68,6 +85,7 @@ public class schedule extends AppCompatActivity {
 
                                 String title = jsonObject.getString("schedule_title");
                                 schedule_title.setText(title);
+                                schedule_id = String.valueOf(charSequence);
 
                             }else{
                                 join_schedule_btn.setVisibility(View.GONE);
@@ -100,7 +118,30 @@ public class schedule extends AppCompatActivity {
     }
 
     public void join_schedule(View view){
-        Toast.makeText(schedule.this, "JOIN", Toast.LENGTH_SHORT).show();
+        Response.Listener<String> responseListener = new Response.Listener<String>(){
+            @Override
+            public void onResponse(String response) {
+                try{
+                    JSONObject jsonObject = new JSONObject(response);
+                    Log.e("Json", jsonObject.toString());
+
+                    boolean success = jsonObject.getBoolean("success");
+
+                    if(success){
+                        Intent to_main = new Intent(schedule.this, main.class);
+                        startActivity(to_main);
+                    }
+
+
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        join_schedule_volley join_schedule_volley = new join_schedule_volley(schedule_id, user_email, responseListener);
+        RequestQueue queue = Volley.newRequestQueue(schedule.this);
+        queue.add(join_schedule_volley);
     }
 
     public void setIconImages(){

@@ -178,6 +178,7 @@ public class ARTIKLoginActivity extends Activity {
 
                     Intent to_main = new Intent(ARTIKLoginActivity.this, main.class);
                     to_main.putExtra("user_email", result.getData().getEmail());
+                    to_main.putExtra("user_name", result.getData().getFullName());
                     to_main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                     startActivity(to_main);

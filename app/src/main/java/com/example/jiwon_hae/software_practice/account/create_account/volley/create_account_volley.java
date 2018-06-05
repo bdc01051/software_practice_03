@@ -15,11 +15,10 @@ public class create_account_volley extends StringRequest {
 
     private Map<String, String> paramters = new HashMap();
 
-    public create_account_volley(String user_email, String userName, String password, Response.Listener<String> listener) {
+    public create_account_volley(String user_email, String userName, Response.Listener<String> listener) {
         super(1, request_address, listener, null);
         this.paramters.put("user_email", user_email);
         this.paramters.put("user_name", userName);
-        this.paramters.put("user_password", password);
     }
 
     public Map<String, String> getParams() {

@@ -106,7 +106,7 @@ public class create_account extends AppCompatActivity {
                         }
                     };
 
-                    create_account_volley Validate = new create_account_volley(create_acc_email_acc.getText().toString()+"@"+create_acc_email_add.getText().toString(), create_acc_userName.getText().toString(),create_acc_password_recheck.getText().toString(), responseListener);
+                    create_account_volley Validate = new create_account_volley(create_acc_email_acc.getText().toString()+"@"+create_acc_email_add.getText().toString(), create_acc_userName.getText().toString(), responseListener);
                     RequestQueue queue = Volley.newRequestQueue(create_account.this);
                     queue.add(Validate);
                 }

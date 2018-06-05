@@ -2,9 +2,13 @@ package com.example.jiwon_hae.software_practice;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -16,12 +20,22 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
 import com.example.jiwon_hae.software_practice.account.create_account.create_account;
+import com.example.jiwon_hae.software_practice.account.create_account.volley.create_account_volley;
+import com.example.jiwon_hae.software_practice.account.create_account.volley.request_check_email;
+import com.example.jiwon_hae.software_practice.account.login.login_activity;
 import com.example.jiwon_hae.software_practice.schedule.at_main.main_listview_adapter;
 import com.example.jiwon_hae.software_practice.schedule.schedule;
 import com.example.jiwon_hae.software_practice.tmap.map_navigation;
+import com.google.gson.JsonArray;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,13 +53,78 @@ public class main extends AppCompatActivity {
     //Permission
     private static int REQUEST_LOCATION_PERMISSION = 1;
 
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor dbEditor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(getIntent().hasExtra("user_email")){
-            Toast.makeText(main.this, getIntent().getStringExtra("user_email"), Toast.LENGTH_SHORT).show();
+        sharedPreferences = getSharedPreferences("DATABASE", Context.MODE_PRIVATE);
+        dbEditor = sharedPreferences.edit();
+
+        if(getIntent().hasExtra("user_email") && getIntent().hasExtra("user_name")){
+
+            Response.Listener<String> responseListener = new Response.Listener<String>(){
+                @Override
+                public void onResponse(String response) {
+                    try{
+                        JSONObject jsonObject = new JSONObject(response);
+                        boolean success = jsonObject.getBoolean("success");
+
+                        if(success){
+                            Response.Listener<String> responseListener = new Response.Listener<String>(){
+                                @Override
+                                public void onResponse(String response) {
+                                    try{
+                                        JSONObject jsonObject = new JSONObject(response);
+                                        boolean success = jsonObject.getBoolean("success");
+
+                                        if(success){
+                                            Toast.makeText(main.this, "가입해주셔서 감사합니다", Toast.LENGTH_SHORT).show();
+
+                                        }else{
+                                            Toast.makeText(main.this, "잠시후에 다시 시도해주세요", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            };
+
+                            create_account_volley Validate = new create_account_volley(getIntent().getStringExtra("user_email"), getIntent().getStringExtra("user_name"), responseListener);
+                            RequestQueue queue = Volley.newRequestQueue(main.this);
+                            queue.add(Validate);
+                        }
+
+                    }catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            request_check_email Validate = new request_check_email(getIntent().getStringExtra("user_email"), responseListener);
+            RequestQueue queue = Volley.newRequestQueue(main.this);
+            queue.add(Validate);
+
+
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("user_email", getIntent().getStringExtra("user_email"));
+                jsonObject.put("user_name", getIntent().getStringExtra("user_name").replace("_", ""));
+                jsonObject.put("auth", sharedPreferences.getString("auth",""));
+
+                dbEditor.putString("DATABASE", jsonObject.toString());
+                dbEditor.commit();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            //dbEditor.putString("user_data");
         }
 
         this.setImageButtons();

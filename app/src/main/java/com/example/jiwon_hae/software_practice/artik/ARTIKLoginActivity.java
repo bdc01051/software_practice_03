@@ -185,6 +185,7 @@ public class ARTIKLoginActivity extends Activity {
                     to_main.putExtra("user_name", result.getData().getFullName());
                     to_main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();
+
                     overridePendingTransition(R.anim.fade_enter, R.anim.fade_exit);
                     startActivity(to_main);
 

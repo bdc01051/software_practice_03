@@ -11,7 +11,7 @@ import java.util.Map;
  */
 
 public class check_schedule_code extends StringRequest{
-    private static String request_address = "http://13.125.170.236";
+    private static String request_address = "http://13.125.170.236/software_practice03/database/get_schedule.php";
 
     private Map<String, String> paramters = new HashMap();
 

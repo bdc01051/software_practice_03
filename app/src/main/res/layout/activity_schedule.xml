@@ -73,6 +73,7 @@
                         android:layout_height="match_parent" />
 
                     <TextView
+                        android:id="@+id/schedule_title"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
@@ -108,16 +109,17 @@
                         android:layout_height="match_parent" />
 
                     <EditText
+                        android:id="@+id/schedule_id"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
                         android:background="@color/transparent"
-                        android:hint="5 digits code"
+                        android:hint="8 digits code"
                         android:textColorHint="@color/light_gray"
                         android:textColor="#000000"
                         android:textSize="11dp"
                         android:lines="1"
-                        android:inputType="textPassword"/>
+                        android:inputType="textVisiblePassword"/>
 
                 </LinearLayout>
 
@@ -125,13 +127,33 @@
                     android:layout_width="match_parent"
                     android:layout_height="12mm" />
 
-                <Button
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="8mm"
-                    android:text="CREATE SCHEDULE"
-                    android:textColor="@color/white"
-                    android:onClick="to_schedule_register"
-                    android:background="@drawable/create_schedule_btn" />
+                    android:layout_height="8mm">
+
+                    <Button
+                        android:id="@+id/create_schedule_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="8mm"
+                        android:text="CREATE SCHEDULE"
+                        android:textColor="@color/white"
+                        android:onClick="to_schedule_register"
+                        android:background="@drawable/create_schedule_btn"
+                        android:visibility="visible"/>
+
+                    <Button
+                        android:id="@+id/join_schedule_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="8mm"
+                        android:text="JOIN SCHEDULE"
+                        android:textColor="@color/white"
+                        android:onClick="join_schedule"
+                        android:background="@drawable/create_schedule_btn"
+                        android:visibility="gone"/>
+
+                </FrameLayout>
+
+
 
             </LinearLayout>
 

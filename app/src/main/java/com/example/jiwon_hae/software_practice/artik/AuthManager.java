@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 
 import net.openid.appauth.AuthState;
 
@@ -29,7 +28,7 @@ public final class AuthManager {
     // it does not need to be done on every activity or service; it is enough to once.
     public static boolean init (Activity a) {
         preferences = a.getSharedPreferences(AUTH_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        //preferenceEditor = preferences.edit();
+        preferenceEditor = preferences.edit();
 
         return preferences.getString(AUTH_STATE, null) != null;
     }

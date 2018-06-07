@@ -123,13 +123,17 @@ public class schedule extends AppCompatActivity {
             public void onResponse(String response) {
                 try{
                     JSONObject jsonObject = new JSONObject(response);
-                    Log.e("Json", jsonObject.toString());
 
                     boolean success = jsonObject.getBoolean("success");
 
                     if(success){
                         Intent to_main = new Intent(schedule.this, main.class);
                         startActivity(to_main);
+                    }
+
+                    boolean existing_member = jsonObject.getBoolean("exisiting_member");
+                    if(existing_member){
+                        Toast.makeText(schedule.this, "이미 참석한 일정입니다", Toast.LENGTH_SHORT).show();
                     }
 
 

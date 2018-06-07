@@ -12,9 +12,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -30,9 +32,13 @@ import com.example.jiwon_hae.software_practice.artik.SensorDataListener;
 import com.example.jiwon_hae.software_practice.drunk_check.drunk_check;
 import com.example.jiwon_hae.software_practice.logout.logout;
 import com.example.jiwon_hae.software_practice.schedule.at_main.main_listview_adapter;
+import com.example.jiwon_hae.software_practice.schedule.at_main.main_listview_item;
 import com.example.jiwon_hae.software_practice.schedule.schedule;
+import com.example.jiwon_hae.software_practice.schedule.volley.get_schedule_volley;
+import com.example.jiwon_hae.software_practice.schedule.volley.get_user_schedule_volley;
 import com.example.jiwon_hae.software_practice.tmap.map_navigation;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,6 +52,8 @@ public class main extends AppCompatActivity {
     private ImageButton drunkcheck_btn;
     private ImageButton logout_btn;
 
+    private String user_id;
+
     //Listview
     main_listview_adapter main_display_adapter;
 
@@ -55,6 +63,9 @@ public class main extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor dbEditor;
     private Handler handler;
+
+    private TextView schedule_time_textView;
+    private TextView schedule_time_textView_AM_PM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,10 +121,11 @@ public class main extends AppCompatActivity {
             RequestQueue queue = Volley.newRequestQueue(main.this);
             queue.add(Validate);
 
-
             try {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("user_email", getIntent().getStringExtra("user_email"));
+
+                user_id = getIntent().getStringExtra("user_email");
                 jsonObject.put("user_name", getIntent().getStringExtra("user_name").replace("_", ""));
                 jsonObject.put("auth", sharedPreferences.getString("auth",""));
 
@@ -135,19 +147,41 @@ public class main extends AppCompatActivity {
 
         setToggleButtons();
 
-        ListView main_schedule_display = (ListView)findViewById(R.id.schedule_listView);
-        main_display_adapter = new main_listview_adapter(this);
-        main_schedule_display.setAdapter(main_display_adapter);
+        schedule_time_textView = (TextView)findViewById(R.id.schedule_time_textView);
+        schedule_time_textView_AM_PM = (TextView)findViewById(R.id.schedule_time_AMPM_textView);
 
+        ListView main_schedule_display = (ListView)findViewById(R.id.schedule_listView);
+        main_display_adapter = new main_listview_adapter(this, schedule_time_textView, schedule_time_textView_AM_PM);
+        main_schedule_display.setAdapter(main_display_adapter);
     }
 
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9998;
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
 
         getToday_day();
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(sharedPreferences.getString("DATABASE",""));
+
+            if(jsonObject.has("user_email")){
+                getUserSchedule(jsonObject.getString("user_email"));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
 
 
         SensorData.requestData(new SensorDataListener() {
@@ -291,7 +325,6 @@ public class main extends AppCompatActivity {
         toggleButtonArrayList.add(thursday);
         toggleButtonArrayList.add(friday);
         toggleButtonArrayList.add(saturday);
-
     }
 
     private void check_off_toggleButtons(String days, ArrayList<ToggleButton> toggleButtons){
@@ -422,5 +455,54 @@ public class main extends AppCompatActivity {
                 Toast.makeText(main.this, text, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+
+
+    private void getUserSchedule(String user_id){
+        Response.Listener<String> responseListener = new Response.Listener<String>(){
+            @Override
+            public void onResponse(String response) {
+                try{
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray jsonArray = jsonObject.getJSONArray("list");
+
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        Response.Listener<String> responseListener = new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                try{
+                                    JSONObject jsonObject = new JSONObject(response);
+
+                                    main_listview_item item = new main_listview_item();
+                                    item.setId(jsonObject.getString("schedule_code"));
+                                    item.setTitle(jsonObject.getString("schedule_title"));
+                                    item.setDate(jsonObject.getString("date"));
+                                    item.setLatlng(jsonObject.getString("venue_latlng"));
+                                    item.setTime(jsonObject.getString("time"));
+                                    item.setVenue(jsonObject.getString("venue"));
+
+                                    main_display_adapter.add_schedule(item);
+
+                                }catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        };
+
+                        get_schedule_volley get_schedule_info = new get_schedule_volley(String.valueOf(jsonArray.get(i)), responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(main.this);
+                        queue.add(get_schedule_info);
+                    }
+
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        get_user_schedule_volley get_user_schedule_volley = new get_user_schedule_volley(user_id, responseListener);
+        RequestQueue queue = Volley.newRequestQueue(main.this);
+        queue.add(get_user_schedule_volley);
     }
 }

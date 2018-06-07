@@ -10,15 +10,66 @@ public class main_listview_item {
     String title;
     String time;
     String date;
-    String day;
-    ArrayList<String> participants = new ArrayList<>();
+    String latlng;
+    String venue;
+    String participants;
+    String id;
+
+    public void setId(String id){
+        this.id = id;
+    }
+
+    public String getId(){
+        return id;
+    }
+
+    public void setVenue(String venue){
+        this.venue = venue;
+    }
+
+    public String getVenue(){
+        return this.venue;
+    }
+
+
+    public void setTitle(String title){
+        this.title = title;
+    }
+
+    public void setParticipants(String participants){
+        this.participants = participants;
+    }
+
+    public void setTime(String time){
+        this.time = time;
+    }
+
+    public void setLatlng(String latlng){
+        this.latlng = latlng;
+    }
+
+    public void setDate(String date){
+        this.date = date;
+    }
 
     public String getTitle(){
         return this.title;
     }
 
-    public String getDay(){
-        return this.day;
+    public String getParticipants(){
+        return this.participants;
+    }
+
+    public String getTime(){
+        return this.time;
+    }
+
+    public String getLatlgn(){
+        return this.latlng;
+    }
+
+    public String getDate(){
+        return this.date;
     }
 
 }

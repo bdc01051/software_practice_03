@@ -135,6 +135,7 @@ public class create_schedule extends AppCompatActivity implements GoogleApiClien
                     SimpleDateFormat regularDateFormat = new SimpleDateFormat("dd:MM:yyyy");
 
                     Date date = regularDateFormat.parse(day.getDay()+":"+(day.getMonth()+1) + ":" + day.getYear());
+
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(date);
 

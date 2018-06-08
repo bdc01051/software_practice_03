@@ -51,8 +51,15 @@ public class create_schedule extends AppCompatActivity implements GoogleApiClien
     private TextView schedule_id;
     private TextView schedule_date;
     private TextView schedule_day;
-    private TextView schedule_time_display;
-    private TextView schedule_time;
+
+
+    private TextView schedule_start_time_display;
+    private TextView schedule_start_time;
+
+    private TextView schedule_end_time_display;
+    private TextView schedule_end_time;
+
+
     private LinearLayout venue_layout;
     private LinearLayout venue_select_layout;
     private Button venue_select_btn;
@@ -93,25 +100,42 @@ public class create_schedule extends AppCompatActivity implements GoogleApiClien
 
         schedule_id = (TextView)findViewById(R.id.schedule_id);
         schedule_date = (TextView)findViewById(R.id.schedule_date);
-        schedule_time = (TextView)findViewById(R.id.set_schedule_time_btn);
+        schedule_start_time = (TextView)findViewById(R.id.set_schedule_start_time_btn);
+        schedule_end_time = (TextView)findViewById(R.id.set_schedule_end_time_btn);
         schedule_day = (TextView)findViewById(R.id.schedule_day);
-        schedule_time_display = (TextView)findViewById(R.id.schedule_time_display);
+        schedule_start_time_display = (TextView)findViewById(R.id.schedule_start_time_display);
+        schedule_end_time_display = (TextView)findViewById(R.id.schedule_end_time_display);
+
         venue_layout = (LinearLayout)findViewById(R.id.venue_layout);
         venue_select_btn = (Button)findViewById(R.id.venue_select_btn);
         venue_title = (TextView)findViewById(R.id.schedule_venue_name);
         change_venue_button = (Button)findViewById(R.id.venue_select_btn_1);
 
-        schedule_time.setOnClickListener(new View.OnClickListener() {
+        schedule_start_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                time_setter_dialog();
+                time_setter_dialog("start", schedule_start_time,schedule_start_time_display);
             }
         });
 
-        schedule_time_display.setOnClickListener(new View.OnClickListener() {
+        schedule_start_time_display.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                time_setter_dialog();
+                time_setter_dialog("start", schedule_start_time,schedule_start_time_display);
+            }
+        });
+
+        schedule_end_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                time_setter_dialog("end", schedule_end_time,schedule_end_time_display);
+            }
+        });
+
+        schedule_end_time_display.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                time_setter_dialog("end", schedule_end_time,schedule_end_time_display);
             }
         });
 
@@ -220,10 +244,10 @@ public class create_schedule extends AppCompatActivity implements GoogleApiClien
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(code_digits == null || schedule_title.getText().toString()== null || user_email == null|| schedule_date_text == null || schedule_date_time == null || venue_name == null || venue_address == null || venue_latlng== null){
+                if(code_digits == null || schedule_title.getText().toString()== null || user_email == null|| schedule_date_text == null || schedule_date_start_time == null || schedule_date_end_time == null|| venue_name == null || venue_address == null || venue_latlng== null){
                     Toast.makeText(create_schedule.this, "모든 항목을 기입해주세요", Toast.LENGTH_SHORT).show();
                 }else{
-                    register_schedule(code_digits, schedule_title.getText().toString(), user_email, schedule_date_text, schedule_date_time, venue_name, venue_address, venue_latlng);
+                    register_schedule(code_digits, schedule_title.getText().toString(), user_email, schedule_date_text, schedule_date_start_time,schedule_date_end_time, venue_name, venue_address, venue_latlng);
                 }
             }
         });
@@ -233,7 +257,8 @@ public class create_schedule extends AppCompatActivity implements GoogleApiClien
     private String code_digits;
     private String user_email;
     private String schedule_date_text;
-    private String schedule_date_time;
+    private String schedule_date_start_time;
+    private String schedule_date_end_time;
     private String venue_name;
     private String venue_latlng;
     private String venue_address;
@@ -305,7 +330,7 @@ public class create_schedule extends AppCompatActivity implements GoogleApiClien
         return day_text;
     }
 
-    public void time_setter_dialog(){
+    public void time_setter_dialog(final String start_end, final TextView schedule_time_textView, final TextView schedule_time_display){
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
@@ -314,8 +339,19 @@ public class create_schedule extends AppCompatActivity implements GoogleApiClien
         mTimePicker = new TimePickerDialog(create_schedule.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                schedule_time.setVisibility(View.INVISIBLE);
-                schedule_date_time = selectedHour+ ":"+selectedMinute;
+                schedule_time_textView.setVisibility(View.INVISIBLE);
+                String schedule_date_time = "";
+
+                switch(start_end){
+                    case "start":
+                        schedule_date_start_time = selectedHour+ ":"+selectedMinute;
+                        schedule_date_time = schedule_date_start_time;
+                        break;
+                    case "end":
+                        schedule_date_end_time = selectedHour+ ":"+selectedMinute;
+                        schedule_date_time = schedule_date_end_time;
+                        break;
+                }
 
                 schedule_time_display.setVisibility(View.VISIBLE);
                 schedule_time_display.setText(schedule_date_time);
@@ -325,7 +361,7 @@ public class create_schedule extends AppCompatActivity implements GoogleApiClien
         mTimePicker.show();
     }
 
-    public void register_schedule(String schedule_id,String schedule_title, String user_id, String date, String time, String place_name, String place_address, String placeLatLng){
+    public void register_schedule(String schedule_id,String schedule_title, String user_id, String date, String start_time, String end_time, String place_name, String place_address, String placeLatLng){
         Response.Listener<String> responseListener = new Response.Listener<String>(){
             @Override
             public void onResponse(String response) {
@@ -346,7 +382,7 @@ public class create_schedule extends AppCompatActivity implements GoogleApiClien
             }
         };
 
-        create_schedule_volley register_schedule_volley = new create_schedule_volley(schedule_id, schedule_title, user_id, date, time, place_name, place_address, placeLatLng, responseListener);
+        create_schedule_volley register_schedule_volley = new create_schedule_volley(schedule_id, schedule_title, user_id, date, start_time,end_time, place_name, place_address, placeLatLng, responseListener);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(register_schedule_volley);
     }

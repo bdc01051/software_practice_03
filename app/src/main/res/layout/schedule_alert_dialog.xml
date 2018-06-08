@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="10mm"
+        android:background="@color/text_blue"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/schedule_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="3mm"
+            android:layout_marginRight="3mm"
+            android:textColor="@color/white"
+            android:textSize="12dp"/>
+
+    </LinearLayout>
+    
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="2mm" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="10mm"
+            android:layout_marginLeft="3mm"
+            android:layout_marginRight="3mm"
+            android:paddingTop="1mm"
+            android:paddingBottom="1mm"
+            android:layout_marginTop="1mm"
+            android:layout_marginBottom="1mm"
+            android:elevation="1mm"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.2"
+                android:text="MEMBERS"
+                android:textSize="12dp"
+                android:layout_marginLeft="3mm"
+                android:gravity="center_vertical"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginRight="3mm"
+                android:layout_marginLeft="3mm"
+                android:layout_height="1dp"
+                android:background="@color/light_gray">
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/schedule_participants"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.8"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="3mm"
+                android:layout_marginRight="3mm"
+                android:textColor="@color/text_blue"
+                android:textSize="12dp"
+                android:maxLines="1"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="2mm" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="10mm"
+            android:layout_marginLeft="3mm"
+            android:layout_marginRight="3mm"
+            android:paddingTop="1mm"
+            android:paddingBottom="1mm"
+            android:layout_marginTop="1mm"
+            android:layout_marginBottom="1mm"
+            android:elevation="1mm"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="DATE"
+                    android:textColor="#000000"
+                    android:gravity="center"
+                    android:textSize="12dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/schedule_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/light_gray"
+                        android:textSize="12dp"/>
+
+                    <Space
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/schedule_day"
+                        android:textColor="@color/light_gray"
+                        android:textSize="12dp"/>
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/dark_gray"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="START TIME"
+                    android:textColor="#000000"
+                    android:gravity="center"
+                    android:textSize="12dp"/>
+
+                <TextView
+                    android:id="@+id/schedule_start_time_display"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textColor="@color/light_gray"
+                    android:textSize="12dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/dark_gray"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="END TIME"
+                    android:textColor="#000000"
+                    android:gravity="center"
+                    android:textSize="12dp"/>
+
+                <TextView
+                    android:id="@+id/schedule_end_time_display"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textColor="@color/light_gray"
+                    android:textSize="12dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="2mm" />
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40mm"
+            android:layout_marginLeft="3mm"
+            android:layout_marginRight="3mm"
+            android:paddingTop="1mm"
+            android:paddingBottom="1mm"
+            android:layout_marginTop="1mm"
+            android:layout_marginBottom="1mm"
+            android:elevation="1mm"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="10mm"
+                android:orientation="vertical"
+                android:layout_marginLeft="3mm"
+                android:layout_marginRight="3mm">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.2"
+                    android:text="VENUE"
+                    android:textSize="12dp"
+                    android:gravity="center_vertical"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray">
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/schedule_venue_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.8"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:textSize = "12dp"
+                    android:maxLines="1"
+                    android:inputType="textShortMessage"
+                    android:textColor="@color/text_blue"/>
+
+            </LinearLayout>
+
+
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="1mm" />
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="3mm"
+                android:layout_marginRight="3mm"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

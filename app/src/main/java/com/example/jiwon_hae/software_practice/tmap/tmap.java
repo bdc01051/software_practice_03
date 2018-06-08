@@ -38,7 +38,6 @@ public class tmap {
 
     private LatLng user_current_location;
 
-
     private ArrayList<String> mArrayMarkerID = new ArrayList<String>();
     private ArrayList<LatLng> mapPoints = new ArrayList<>();
     private TMapGpsManager gps = null;

@@ -101,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="TIME"
+                android:text="START TIME"
                 android:textColor="#000000"
                 android:gravity="center"
                 android:textSize="12dp"/>
@@ -112,7 +112,7 @@
                 android:layout_width="match_parent">
 
                 <TextView
-                    android:id="@+id/set_schedule_time_btn"
+                    android:id="@+id/set_schedule_start_time_btn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="SET TIME"
@@ -125,7 +125,7 @@
                     android:background="@drawable/schedule_linearlayout_design"/>
 
                 <TextView
-                    android:id="@+id/schedule_time_display"
+                    android:id="@+id/schedule_start_time_display"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -155,23 +155,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="CODE"
+                android:text="END TIME"
                 android:textColor="#000000"
                 android:gravity="center"
                 android:textSize="12dp"/>
 
-            <TextView
-                android:id="@+id/schedule_id"
-                android:layout_width="match_parent"
+            <FrameLayout
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:textColor="@color/light_gray"
-                android:textSize="12dp"/>
+                android:layout_width="match_parent">
+
+                <TextView
+                    android:id="@+id/set_schedule_end_time_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="SET TIME"
+                    android:textColor="@color/text_blue"
+                    android:textSize="12dp"
+                    android:layout_marginLeft="3mm"
+                    android:layout_marginRight="3mm"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:background="@drawable/schedule_linearlayout_design"/>
+
+                <TextView
+                    android:id="@+id/schedule_end_time_display"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textColor="@color/light_gray"
+                    android:textSize="12dp"
+                    android:visibility="gone"/>
+
+            </FrameLayout>
+
+
 
         </LinearLayout>
-
     </LinearLayout>
 
     <Space
@@ -189,40 +210,83 @@
         android:layout_marginBottom="1mm"
         android:elevation="1mm"
         android:background="@color/white"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.2"
-            android:text="Title"
-            android:textSize="12dp"
-            android:layout_marginLeft="3mm"
-            android:gravity="center_vertical"/>
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginRight="3mm"
-            android:layout_marginLeft="3mm"
-            android:layout_height="1dp"
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.2"
+                android:text="Title"
+                android:textSize="12dp"
+                android:layout_marginLeft="3mm"
+                android:gravity="center_vertical"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginRight="3mm"
+                android:layout_marginLeft="3mm"
+                android:layout_height="1dp"
+                android:background="@color/light_gray">
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/schedule_title"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.8"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="3mm"
+                android:layout_marginRight="3mm"
+                android:hint = "Title of the schedule"
+                android:textSize = "12dp"
+                android:maxLines="1"
+                android:inputType="textShortMessage"
+                android:textColor="@color/text_blue"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
             android:background="@color/light_gray">
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/schedule_title"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.8"
-            android:background="@null"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="3mm"
-            android:layout_marginRight="3mm"
-            android:hint = "Title of the schedule"
-            android:textSize = "12dp"
-            android:maxLines="1"
-            android:inputType="textShortMessage"
-            android:textColor="@color/text_blue"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="CODE"
+                android:textColor="#000000"
+                android:gravity="center"
+                android:textSize="12dp"/>
+
+            <TextView
+                android:id="@+id/schedule_id"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="@color/light_gray"
+                android:textSize="12dp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -356,7 +420,7 @@
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="8mm"
-            android:text= "SUBMIT"
+            android:text= "CREATE"
             android:gravity="center"
             android:layout_gravity="center"
             android:textSize ="11dp"

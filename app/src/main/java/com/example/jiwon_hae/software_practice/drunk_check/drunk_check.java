@@ -1,7 +1,11 @@
 package com.example.jiwon_hae.software_practice.drunk_check;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jiwon_hae.software_practice.R;
+import com.example.jiwon_hae.software_practice.main;
 
 public class drunk_check extends AppCompatActivity {
     private Button button2;
@@ -22,8 +27,11 @@ public class drunk_check extends AppCompatActivity {
 
         TestCase= (TextView) findViewById(R.id.textView3);
         TestCase.setText(getResources().getString(R.string.Test_DrunkCheck_case));
-        final String B = TestCase.getText().toString();
+        TestCase.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        TestCase.setSingleLine(true);
+        TestCase.setSelected(true);
 
+        final String B = TestCase.getText().toString();
 
         this.button2 = (Button)findViewById(R.id.Drunk_Check_Test);
         this.button2.setOnClickListener(new View.OnClickListener() {
@@ -32,19 +40,23 @@ public class drunk_check extends AppCompatActivity {
                 editText = (EditText)findViewById(R.id.editText6);
                 String A = editText.getText().toString();
 
-                if(A.equals(B))
-                    Toast.makeText(drunk_check.this,"correct",Toast.LENGTH_SHORT).show();
+                if(A.equals(B)){
+                    SharedPreferences schedule_ = getSharedPreferences("SCHEDULE", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor schedule_editor = schedule_.edit();
+
+                    schedule_editor.putString("schedule", null);
+                    schedule_editor.commit();
+
+                    Toast.makeText(drunk_check.this,"안전히 귀가하세요",Toast.LENGTH_SHORT).show();
+
+                    Intent to_main = new Intent(drunk_check.this, main.class);
+                    startActivity(to_main);
+                }
                 else
-                    Toast.makeText(drunk_check.this,"false",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(drunk_check.this,"아직 취하신거 같습니다. 다시 한번 시도해주세요",Toast.LENGTH_SHORT).show();
             }
 
         });
-
-
-
-
-
-
     }
 
 

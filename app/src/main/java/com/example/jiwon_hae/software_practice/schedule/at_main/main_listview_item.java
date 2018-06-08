@@ -8,7 +8,8 @@ import java.util.ArrayList;
 
 public class main_listview_item {
     String title;
-    String time;
+    String start_time;
+    String end_time;
     String date;
     String latlng;
     String venue;
@@ -40,8 +41,11 @@ public class main_listview_item {
         this.participants = participants;
     }
 
-    public void setTime(String time){
-        this.time = time;
+    public void setStartTime(String time){
+        this.start_time = time;
+    }
+    public void setEndTime(String time){
+        this.end_time = time;
     }
 
     public void setLatlng(String latlng){
@@ -60,11 +64,15 @@ public class main_listview_item {
         return this.participants;
     }
 
-    public String getTime(){
-        return this.time;
+    public String getStartTime(){
+        return this.start_time;
     }
 
-    public String getLatlgn(){
+    public String getEndTime(){
+        return this.end_time;
+    }
+
+    public String getLatlng(){
         return this.latlng;
     }
 

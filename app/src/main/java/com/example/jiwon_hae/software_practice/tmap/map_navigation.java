@@ -93,7 +93,6 @@ public class map_navigation extends AppCompatActivity implements OnMapReadyCallb
         request_walking_path =(ToggleButton)findViewById(R.id.walking_nav_btn);
         request_driving_path =(ToggleButton)findViewById(R.id.car_nav_btn);
 
-
         sampleDATA = new LatLng(37.300583, 126.970785);
         sampleDATA1 = new LatLng(37.266773, 126.999418);
 

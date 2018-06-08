@@ -147,12 +147,10 @@ public class main extends AppCompatActivity {
 
         setToggleButtons();
 
+        main_schedule_display = (ListView)findViewById(R.id.schedule_listView);
+
         schedule_time_textView = (TextView)findViewById(R.id.schedule_time_textView);
         schedule_time_textView_AM_PM = (TextView)findViewById(R.id.schedule_time_AMPM_textView);
-
-        ListView main_schedule_display = (ListView)findViewById(R.id.schedule_listView);
-        main_display_adapter = new main_listview_adapter(this, schedule_time_textView, schedule_time_textView_AM_PM);
-        main_schedule_display.setAdapter(main_display_adapter);
     }
 
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9998;
@@ -164,11 +162,24 @@ public class main extends AppCompatActivity {
 
     }
 
+    private ListView main_schedule_display;
+
     @Override
     protected void onResume() {
         super.onResume();
 
+
+        try {
+            main_display_adapter = new main_listview_adapter(this, user_id, schedule_time_textView, schedule_time_textView_AM_PM);
+            main_schedule_display.setAdapter(main_display_adapter);
+            main_display_adapter.setCurrent_schedule(schedule_time_textView, schedule_time_textView_AM_PM);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         getToday_day();
+
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(sharedPreferences.getString("DATABASE",""));
@@ -180,21 +191,6 @@ public class main extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-
-
-        SensorData.requestData(new SensorDataListener() {
-            @Override
-            public void onSucceed(SensorData data) {
-                displayToast(data.isPresent() ? "present" : "not present");
-            }
-
-            @Override
-            public void onFail(Exception exc) {
-                displayToast("failed : " + exc.getMessage());
-            }
-        });
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(main.this, "No Permission", Toast.LENGTH_SHORT).show();
@@ -269,8 +265,15 @@ public class main extends AppCompatActivity {
         this.drunkcheck_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent to_drunckcheck = new Intent(main.this, drunk_check.class);
-                startActivity(to_drunckcheck);
+                SharedPreferences schedule_ = getSharedPreferences("SCHEDULE", Context.MODE_PRIVATE);
+                String current_schedule = schedule_.getString("schedule", "");
+
+                if(!current_schedule.isEmpty()){
+                    Intent to_drunckcheck = new Intent(main.this, drunk_check.class);
+                    startActivity(to_drunckcheck);
+                }else{
+                    Toast.makeText(main.this, "현재 술자리 일정이 없습니다", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -458,7 +461,6 @@ public class main extends AppCompatActivity {
     }
 
 
-
     private void getUserSchedule(String user_id){
         Response.Listener<String> responseListener = new Response.Listener<String>(){
             @Override
@@ -479,8 +481,10 @@ public class main extends AppCompatActivity {
                                     item.setTitle(jsonObject.getString("schedule_title"));
                                     item.setDate(jsonObject.getString("date"));
                                     item.setLatlng(jsonObject.getString("venue_latlng"));
-                                    item.setTime(jsonObject.getString("time"));
+                                    item.setStartTime(jsonObject.getString("start_time"));
+                                    item.setEndTime(jsonObject.getString("end_time"));
                                     item.setVenue(jsonObject.getString("venue"));
+                                    item.setParticipants(jsonObject.getString("participants"));
 
                                     main_display_adapter.add_schedule(item);
 

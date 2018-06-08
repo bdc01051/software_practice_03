@@ -72,6 +72,7 @@
         <activity android:name=".schedule.schedule" />
         <activity android:name=".schedule.create_schedule" />
         <activity android:name=".logout.logout"></activity>
+        <service android:name=".artik.service.artik_service"></service>
     </application>
 
 </manifest>

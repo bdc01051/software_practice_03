@@ -32,6 +32,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -127,6 +128,15 @@ public class main_listview_adapter extends BaseAdapter{
         builder.setPositiveButton("SELECT",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+
+                        FirebaseMessaging.getInstance().subscribeToTopic(item.getId());
+
+                        saveCurrent_schedule(item);
+                        try {
+                            setCurrent_schedule(time_display, am_pm);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                         Intent start_artik = new Intent(
                                 mContext,//현재제어권자

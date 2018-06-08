@@ -37,6 +37,8 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by jiwon_hae on 2018. 6. 8..
  */
@@ -49,7 +51,7 @@ public class artik_service extends Service {
     int startHour;
     int startMin;
 
-    private Thread locating_thread;
+    private BroadcastReceiver mReceiver;
 
     @Override
     public int onStartCommand(Intent intent,  int flags, int startId) {
@@ -59,6 +61,8 @@ public class artik_service extends Service {
 
         mToast_handler = new toast_handler();
         track_location_handler = new location_handler();
+        user_home = new user_home();
+
         count_thread = new count_thread(start_time);
         count_thread.start();
 
@@ -96,7 +100,18 @@ public class artik_service extends Service {
             LatLng place_location = new LatLng(myLocation.latitude, myLocation.longitude);
             updateUserLocation(userName, place_location.toString().replace("lat/lng:", "").replace(" ","").replace(")", "").replace("(", ""));
 
-            Toast.makeText(getApplicationContext(), "user_not_home", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "USER NOT HOME", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private user_home user_home;
+
+    private class user_home extends Handler{
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            Toast.makeText(getApplicationContext(), "USER HOME", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -104,11 +119,24 @@ public class artik_service extends Service {
         private int time_count;
         private boolean intiate_locating = false;
         private boolean home = false;
+        private boolean stop = false;
 
         private count_thread(String time){
             String[] time_string = time.split(":");
             int hour = Integer.parseInt(time_string[0]);
             int min = Integer.parseInt(time_string[1]);
+
+            IntentFilter intentfilter = new IntentFilter();
+            intentfilter.addAction("com.example.jiwon_hae.software_practice.DRUNK_CHECK");
+
+            mReceiver = new BroadcastReceiver(){
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    boolean check = intent.getBooleanExtra("checked_not_drunk", false);
+                    stop = check;
+                }
+            };
+            registerReceiver(mReceiver, intentfilter);
 
             //this.time_count = (hour * 60 * min) * 60*1000;
             this.time_count = 5;
@@ -136,7 +164,7 @@ public class artik_service extends Service {
             }
 
             if(this.intiate_locating){
-                while(!home){
+                while(!home && !stop){
                     SensorData.requestData(new SensorDataListener() {
                         @Override
                         public void onSucceed(SensorData data) {
@@ -155,16 +183,24 @@ public class artik_service extends Service {
                         e.printStackTrace();
                     }
 
-                    if(!home){
+                    if(!home && !stop){
                         track_location_handler.sendEmptyMessage(1);
                     }
                 }
             }
 
-            if(home){
+            if(home || stop){
                 count_thread.interrupt();
+                user_home.sendEmptyMessage(1);
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        unregisterReceiver(mReceiver);
     }
 
     private get_user_location mget_user_location;
@@ -175,7 +211,6 @@ public class artik_service extends Service {
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    Log.e("jsonObject", jsonObject.toString());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -183,35 +218,9 @@ public class artik_service extends Service {
             }
         };
 
-        Log.e("test", latlng);
-
         update_user_location_volley update_user_location_volley = new update_user_location_volley(userName, latlng,responseListener);
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(update_user_location_volley);
-    }
-
-    private BroadcastReceiver LocationUpdateStopper = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if(intent.getBooleanExtra("success_drunk_test", false)){
-                if(locating_thread.isAlive()){
-                    locating_thread.interrupt();
-                }
-            }
-
-            if(intent.getBooleanExtra("arrived_home", false)){
-                if(locating_thread.isAlive()){
-                    locating_thread.interrupt();
-                }
-            }
-        }
-    };
-
-    @Override
-    public void onDestroy() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(LocationUpdateStopper);
-        super.onDestroy();
-
     }
 
     @Nullable

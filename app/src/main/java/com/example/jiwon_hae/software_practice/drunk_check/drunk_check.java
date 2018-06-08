@@ -51,6 +51,11 @@ public class drunk_check extends AppCompatActivity {
 
                     Intent to_main = new Intent(drunk_check.this, main.class);
                     startActivity(to_main);
+
+                    Intent sendIntent = new Intent("com.example.jiwon_hae.software_practice.DRUNK_CHECK");
+                    sendIntent.putExtra("checked_not_drunk", true);
+                    sendBroadcast(sendIntent);
+
                 }
                 else
                     Toast.makeText(drunk_check.this,"아직 취하신거 같습니다. 다시 한번 시도해주세요",Toast.LENGTH_SHORT).show();

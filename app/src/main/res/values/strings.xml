@@ -8,4 +8,6 @@
     <!-- Drunkcheck Test -->
     <string name="Test_DrunkCheck_case">소프트웨어 실습 조교님들 짱짱맨!!</string>
 
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+
 </resources>

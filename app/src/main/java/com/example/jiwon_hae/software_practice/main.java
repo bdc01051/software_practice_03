@@ -30,6 +30,7 @@ import com.example.jiwon_hae.software_practice.account.create_account.volley.req
 import com.example.jiwon_hae.software_practice.artik.SensorData;
 import com.example.jiwon_hae.software_practice.artik.SensorDataListener;
 import com.example.jiwon_hae.software_practice.drunk_check.drunk_check;
+import com.example.jiwon_hae.software_practice.firebase.update_fcm_token;
 import com.example.jiwon_hae.software_practice.logout.logout;
 import com.example.jiwon_hae.software_practice.schedule.at_main.main_listview_adapter;
 import com.example.jiwon_hae.software_practice.schedule.at_main.main_listview_item;
@@ -37,6 +38,7 @@ import com.example.jiwon_hae.software_practice.schedule.schedule;
 import com.example.jiwon_hae.software_practice.schedule.volley.get_schedule_volley;
 import com.example.jiwon_hae.software_practice.schedule.volley.get_user_schedule_volley;
 import com.example.jiwon_hae.software_practice.tmap.map_navigation;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -111,6 +113,25 @@ public class main extends AppCompatActivity {
                             queue.add(Validate);
                         }
 
+                        String token = FirebaseInstanceId.getInstance().getToken();
+
+                        Response.Listener<String> token_responseListener = new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                try{
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    Log.e("json_token", jsonObject.toString());
+
+                                }catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        };
+
+                        update_fcm_token get_schedule_info = new update_fcm_token(getIntent().getStringExtra("user_email"), token, token_responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(main.this);
+                        queue.add(get_schedule_info);
+
                     }catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -135,9 +156,6 @@ public class main extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
-            //dbEditor.putString("user_data");
         }
 
         this.setImageButtons();

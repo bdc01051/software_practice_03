@@ -55,6 +55,8 @@ public class main extends AppCompatActivity {
     private ImageButton logout_btn;
 
     private String user_id;
+    private String user_token;
+    private String user_name;
 
     //Listview
     main_listview_adapter main_display_adapter;
@@ -69,6 +71,7 @@ public class main extends AppCompatActivity {
     private TextView schedule_time_textView;
     private TextView schedule_time_textView_AM_PM;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +81,7 @@ public class main extends AppCompatActivity {
         dbEditor = sharedPreferences.edit();
 
         handler = new Handler(Looper.getMainLooper());
+        user_token = FirebaseInstanceId.getInstance().getToken();
 
         if(getIntent().hasExtra("user_email") && getIntent().hasExtra("user_name")){
             Response.Listener<String> responseListener = new Response.Listener<String>(){
@@ -86,6 +90,7 @@ public class main extends AppCompatActivity {
                     try{
                         JSONObject jsonObject = new JSONObject(response);
                         boolean success = jsonObject.getBoolean("success");
+
 
                         if(success){
                             Response.Listener<String> responseListener = new Response.Listener<String>(){
@@ -111,26 +116,40 @@ public class main extends AppCompatActivity {
                             create_account_volley Validate = new create_account_volley(getIntent().getStringExtra("user_email"), getIntent().getStringExtra("user_name"), responseListener);
                             RequestQueue queue = Volley.newRequestQueue(main.this);
                             queue.add(Validate);
+
+                            Response.Listener<String> token_responseListener = new Response.Listener<String>(){
+                                @Override
+                                public void onResponse(String response) {
+                                    try{
+                                        JSONObject jsonObject = new JSONObject(response);
+
+                                    }catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            };
+
+                            update_fcm_token get_schedule_info = new update_fcm_token(getIntent().getStringExtra("user_email"), user_token, token_responseListener);
+                            queue.add(get_schedule_info);
                         }
 
-                        String token = FirebaseInstanceId.getInstance().getToken();
+                        try {
+                            JSONObject jsonObject_local = new JSONObject();
+                            jsonObject_local.put("user_email", getIntent().getStringExtra("user_email"));
+                            jsonObject_local.put("user_token", user_token);
 
-                        Response.Listener<String> token_responseListener = new Response.Listener<String>(){
-                            @Override
-                            public void onResponse(String response) {
-                                try{
-                                    JSONObject jsonObject = new JSONObject(response);
-                                    Log.e("json_token", jsonObject.toString());
+                            user_id = getIntent().getStringExtra("user_email");
+                            user_name = getIntent().getStringExtra("user_name");
 
-                                }catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        };
+                            jsonObject_local.put("user_name", getIntent().getStringExtra("user_name").replace("_", ""));
+                            jsonObject_local.put("auth", sharedPreferences.getString("auth",""));
 
-                        update_fcm_token get_schedule_info = new update_fcm_token(getIntent().getStringExtra("user_email"), token, token_responseListener);
-                        RequestQueue queue = Volley.newRequestQueue(main.this);
-                        queue.add(get_schedule_info);
+                            dbEditor.putString("DATABASE", jsonObject_local.toString());
+                            dbEditor.commit();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }catch (JSONException e) {
                         e.printStackTrace();
@@ -141,21 +160,6 @@ public class main extends AppCompatActivity {
             request_check_email Validate = new request_check_email(getIntent().getStringExtra("user_email"), responseListener);
             RequestQueue queue = Volley.newRequestQueue(main.this);
             queue.add(Validate);
-
-            try {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("user_email", getIntent().getStringExtra("user_email"));
-
-                user_id = getIntent().getStringExtra("user_email");
-                jsonObject.put("user_name", getIntent().getStringExtra("user_name").replace("_", ""));
-                jsonObject.put("auth", sharedPreferences.getString("auth",""));
-
-                dbEditor.putString("DATABASE", jsonObject.toString());
-                dbEditor.commit();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         }
 
         this.setImageButtons();
@@ -186,9 +190,8 @@ public class main extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-
         try {
-            main_display_adapter = new main_listview_adapter(this, user_id, schedule_time_textView, schedule_time_textView_AM_PM);
+            main_display_adapter = new main_listview_adapter(this, user_id, user_name, user_token, schedule_time_textView, schedule_time_textView_AM_PM);
             main_schedule_display.setAdapter(main_display_adapter);
             main_display_adapter.setCurrent_schedule(schedule_time_textView, schedule_time_textView_AM_PM);
 
@@ -526,5 +529,12 @@ public class main extends AppCompatActivity {
         get_user_schedule_volley get_user_schedule_volley = new get_user_schedule_volley(user_id, responseListener);
         RequestQueue queue = Volley.newRequestQueue(main.this);
         queue.add(get_user_schedule_volley);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+
     }
 }

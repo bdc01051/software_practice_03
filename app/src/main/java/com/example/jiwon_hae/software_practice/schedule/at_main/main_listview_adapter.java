@@ -69,13 +69,16 @@ public class main_listview_adapter extends BaseAdapter{
     private TextView time_display;
     private TextView am_pm;
 
-
+    private String userId;
     private String userName;
+    private String user_token;
 
-    public main_listview_adapter(Context context, String userName, TextView time_display, TextView am_pm) {
+    public main_listview_adapter(Context context, String userId, String userName, String user_token, TextView time_display, TextView am_pm) {
         this.mContext = context;
         this.inflater = LayoutInflater.from(mContext);
+        this.userId = userId;
         this.userName = userName;
+        this.user_token = user_token;
         this.time_display = time_display;
         this.am_pm = am_pm;
     }
@@ -128,7 +131,6 @@ public class main_listview_adapter extends BaseAdapter{
         builder.setPositiveButton("SELECT",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
                         FirebaseMessaging.getInstance().subscribeToTopic(item.getId());
 
                         saveCurrent_schedule(item);
@@ -142,10 +144,13 @@ public class main_listview_adapter extends BaseAdapter{
                                 mContext,//현재제어권자
                                 artik_service.class); // 이동할 컴포넌트
 
-                        start_artik.putExtra("userName", userName);
+                        start_artik.putExtra("userName", userId);
+                        start_artik.putExtra("userToken", user_token);
+                        start_artik.putExtra("schedule_id", item.getId());
                         start_artik.putExtra("start_time", item.getEndTime());
 
                         mContext.startService(start_artik);
+
 
                         /*if (getDate_today().replace("0", "").equals(item.getDate())) {
                             saveCurrent_schedule(item);
@@ -159,8 +164,10 @@ public class main_listview_adapter extends BaseAdapter{
                                     mContext,//현재제어권자
                                     artik_service.class); // 이동할 컴포넌트
 
-                            start_artik.putExtra("userName", userName);
-                            start_artik.putExtra("startTime", item.getDate());
+                            start_artik.putExtra("userName", userId);
+                            start_artik.putExtra("userToken", user_token);
+                            start_artik.putExtra("schedule_id", item.getId());
+                            start_artik.putExtra("start_time", item.getEndTime());
 
                             mContext.startService(start_artik);
                         }else{
@@ -345,6 +352,8 @@ public class main_listview_adapter extends BaseAdapter{
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("start_time", item.getStartTime());
             jsonObject.put("end_time", item.getEndTime());
+            jsonObject.put("place_latlng", item.getLatlng());
+            jsonObject.put("place_name", item.getVenue());
 
             schedule_edit.putString("schedule", jsonObject.toString());
             schedule_edit.commit();
@@ -359,16 +368,22 @@ public class main_listview_adapter extends BaseAdapter{
 
         if(schedule_.getString("schedule", "").contains("start_time")) {
             JSONObject jsonObject = new JSONObject(schedule_.getString("schedule", ""));
+
             String[] time = jsonObject.getString("start_time").split(":");
 
             if (Integer.parseInt(time[0]) < 12) {
                 if (Integer.parseInt(time[0]) < 10) {
                     set_time_display.setText("0" + time[0] + ":" + time[1]);
+                }else{
+                    set_time_display.setText(Integer.parseInt(time[0]) - 12 + ":" + time[1]);
                 }
                 set_am_pm.setText("AM");
+
             } else {
                 if (Integer.parseInt(time[0]) - 12 < 10) {
                     set_time_display.setText("0" + (Integer.parseInt(time[0]) - 12) + ":" + time[1]);
+                }else{
+                    set_time_display.setText(Integer.parseInt(time[0]) - 12 + ":" + time[1]);
                 }
                 set_am_pm.setText("PM");
             }

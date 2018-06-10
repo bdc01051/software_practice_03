@@ -2,6 +2,9 @@ package com.example.jiwon_hae.software_practice.tmap;
 
 import android.Manifest;
 import android.app.Fragment;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -69,7 +72,10 @@ public class map_navigation extends AppCompatActivity implements OnMapReadyCallb
     //Samples
     private LatLng sampleDATA;
     private LatLng sampleDATA1;
-    private String friendsID ;
+
+    //Actual_data;
+    private LatLng locationLatLng;
+    private String markerName ;
 
     get_user_location mGet_user_location;
 
@@ -90,8 +96,47 @@ public class map_navigation extends AppCompatActivity implements OnMapReadyCallb
                 .findFragmentById(R.id.mapView);
         mapFragment.getMapAsync(this);
 
-        request_walking_path =(ToggleButton)findViewById(R.id.walking_nav_btn);
-        request_driving_path =(ToggleButton)findViewById(R.id.car_nav_btn);
+        request_walking_path =findViewById(R.id.walking_nav_btn);
+        request_driving_path =findViewById(R.id.car_nav_btn);
+
+        if(getIntent().hasExtra("friends_name")){
+            markerName = getIntent().getStringExtra("friends_name");
+            String latlng_string =  getIntent().getStringExtra("user_latlng").replace("lat/lng:", "").replace(" ", "").replace("(", "").replace(")","");
+            String[] split_latlng = latlng_string.split(",");
+
+            Double lat = Double.parseDouble(split_latlng[0]);
+            Double lng = Double.parseDouble(split_latlng[1]);
+
+            locationLatLng = new LatLng(lat, lng);
+
+            NotificationManager nm =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            nm.cancel(getIntent().getIntExtra("notification_id",0));
+
+        }else{
+            SharedPreferences schedule_ = this.getSharedPreferences("SCHEDULE", Context.MODE_PRIVATE);
+
+            if(schedule_.getString("schedule", "").contains("start_time")) {
+                try {
+                    JSONObject jsonObject = new JSONObject(schedule_.getString("schedule", ""));
+                    markerName = jsonObject.getString("place_name");
+
+                    String latlng_string =  jsonObject.getString("place_latlng").replace("lat/lng:", "").replace(" ", "").replace("(", "").replace(")","");
+                    String[] split_latlng = latlng_string.split(",");
+
+                    Double lat = Double.parseDouble(split_latlng[0]);
+                    Double lng = Double.parseDouble(split_latlng[1]);
+
+                    locationLatLng = new LatLng(lat, lng);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }else{
+
+            }
+        }
 
         sampleDATA = new LatLng(37.300583, 126.970785);
         sampleDATA1 = new LatLng(37.266773, 126.999418);
@@ -107,7 +152,7 @@ public class map_navigation extends AppCompatActivity implements OnMapReadyCallb
                     request_driving_path.setChecked(false);
 
                     try {
-                        getLocationData("pedestrian", mGet_user_location.getCurrentLocation(), sampleDATA);
+                        getLocationData("pedestrian", mGet_user_location.getCurrentLocation(), locationLatLng);
                         ArrayList<LatLng> path = mapPoints;
 
                         if (path != null) {
@@ -135,7 +180,7 @@ public class map_navigation extends AppCompatActivity implements OnMapReadyCallb
 
                     try {
                         //getLocationData("car", mGet_user_location.getCurrentLocation(), sampleDATA);
-                        getLocationData("car", sampleDATA1, sampleDATA);
+                        getLocationData("car", mGet_user_location.getCurrentLocation(), locationLatLng);
                         ArrayList<LatLng> path = mapPoints;
 
                         if (path != null) {
@@ -171,7 +216,6 @@ public class map_navigation extends AppCompatActivity implements OnMapReadyCallb
                     if(success){
                         location_information[0] = jsonObject.getString("location_information");
                         Toast.makeText(map_navigation.this, "register_succeess", Toast.LENGTH_SHORT).show();
-                        Log.e("request_user_location", location_information.toString());
 
                     }else{
                         Log.e("request_user_location", "failed");
@@ -240,7 +284,7 @@ public class map_navigation extends AppCompatActivity implements OnMapReadyCallb
         LatLng place_location = new LatLng(myLocation.latitude, myLocation.longitude);
         googleMap.addMarker(new MarkerOptions().position(place_location).title("My Location")).showInfoWindow();
 
-        googleMap.addMarker(new MarkerOptions().position(sampleDATA).title("Destination")).showInfoWindow();
+        googleMap.addMarker(new MarkerOptions().position(locationLatLng).title("Destination")).showInfoWindow();
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place_location, 16.0f));
         googleMap.setMapType(1);
@@ -252,8 +296,6 @@ public class map_navigation extends AppCompatActivity implements OnMapReadyCallb
     public ArrayList<LatLng> mapPoints = new ArrayList<>();
 
     public ArrayList<LatLng> getLocationData (final String nav_type, final LatLng startPoint, final LatLng endPoint) throws InterruptedException {
-        Log.e("test", nav_type);
-
         Thread nav_thread = new Thread() {
             public void run() {
                 HttpClient httpClient = new DefaultHttpClient();

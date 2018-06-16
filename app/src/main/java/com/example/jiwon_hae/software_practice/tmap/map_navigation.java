@@ -146,6 +146,11 @@ public class map_navigation extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void setToggleButtonActions(){
+        if(locationLatLng == null){
+            request_walking_path.setClickable(false);
+            request_driving_path.setClickable(false);
+        }
+
         request_walking_path.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -274,6 +279,7 @@ public class map_navigation extends AppCompatActivity implements OnMapReadyCallb
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
             getCurret_user_location(googleMap);
+
         }else{
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
@@ -284,7 +290,11 @@ public class map_navigation extends AppCompatActivity implements OnMapReadyCallb
         LatLng place_location = new LatLng(myLocation.latitude, myLocation.longitude);
         googleMap.addMarker(new MarkerOptions().position(place_location).title("My Location")).showInfoWindow();
 
-        googleMap.addMarker(new MarkerOptions().position(locationLatLng).title("Destination")).showInfoWindow();
+        if(locationLatLng != null){
+            googleMap.addMarker(new MarkerOptions().position(locationLatLng).title("Destination")).showInfoWindow();
+        }else{
+            Toast.makeText(map_navigation.this, "아직 술자리 일정이 없습니다", Toast.LENGTH_SHORT).show();
+        }
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place_location, 16.0f));
         googleMap.setMapType(1);

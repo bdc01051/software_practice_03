@@ -24,6 +24,7 @@ import com.example.jiwon_hae.software_practice.artik.SensorDataListener;
 import com.example.jiwon_hae.software_practice.artik.service.volley.get_user_home_info;
 import com.example.jiwon_hae.software_practice.artik.service.volley.update_user_home;
 import com.example.jiwon_hae.software_practice.artik.service.volley.update_user_location_volley;
+import com.example.jiwon_hae.software_practice.firebase.volley.get_user_tokens;
 import com.example.jiwon_hae.software_practice.firebase.volley.send_fcm_message_volley;
 import com.example.jiwon_hae.software_practice.main;
 import com.example.jiwon_hae.software_practice.schedule.at_main.main_listview_item;
@@ -49,6 +50,7 @@ public class artik_service extends Service {
     private String userName;
     private String userToken;
     private String schedule_id;
+    private String userId;
     private String[] startTime;
     private boolean startLocating;
 
@@ -56,21 +58,23 @@ public class artik_service extends Service {
     int startMin;
 
     private BroadcastReceiver mReceiver;
+    private String participant_tokens;
 
     @Override
     public int onStartCommand(Intent intent,  int flags, int startId) {
         start_time = intent.getStringExtra("start_time");
         schedule_id = intent.getStringExtra("schedule_id");
+        participant_tokens = intent.getStringExtra("participants_token").replace(" ", "").replace("]","").replace("[","");
 
         SharedPreferences sharedPreferences = getSharedPreferences("DATABASE", MODE_PRIVATE);
         try {
             JSONObject jsonObject = new JSONObject(sharedPreferences.getString("DATABASE", ""));
             userName = jsonObject.getString("user_name");
             userToken = jsonObject.getString("user_token");
+            userId = jsonObject.getString("user_email");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
 
         startLocating = false;
 
@@ -79,8 +83,6 @@ public class artik_service extends Service {
 
         count_thread = new count_thread(start_time);
         count_thread.start();
-
-        mget_user_location = new get_user_location(getApplicationContext());
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -101,6 +103,8 @@ public class artik_service extends Service {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
+            get_user_location mget_user_location = new get_user_location(getApplicationContext());
+
             LatLng myLocation = mget_user_location.getCurrentLocation();
             LatLng place_location = new LatLng(myLocation.latitude, myLocation.longitude);
             updateUserLocation(userName, place_location.toString().replace("lat/lng:", "").replace(" ","").replace(")", "").replace("(", ""));
@@ -108,7 +112,7 @@ public class artik_service extends Service {
             Toast.makeText(getApplicationContext(), "USER NOT HOME", Toast.LENGTH_SHORT).show();
 
             try {
-                send_fcm_message(userToken, userName, schedule_id, false, place_location.toString(), "USER NOT HOME", "all");
+                send_fcm_message(userId, userToken, userName, schedule_id, false, place_location.toString(), "USER NOT HOME", "all", participant_tokens);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -125,7 +129,7 @@ public class artik_service extends Service {
             Toast.makeText(getApplicationContext(), "USER HOME", Toast.LENGTH_SHORT).show();
 
             try {
-                send_fcm_message(userToken, userName, schedule_id, true, "none", "USER NOT HOME", "all");
+                send_fcm_message(userId, userToken, userName, schedule_id, true, "none", "USER NOT HOME", "all", participant_tokens);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -185,7 +189,8 @@ public class artik_service extends Service {
                     SensorData.requestData(new SensorDataListener() {
                         @Override
                         public void onSucceed(SensorData data) {
-                            //home = data.isPresent();
+                            home = data.isPresent();
+                            Log.e("home", String.valueOf(home));
                         }
                         @Override
                         public void onFail(Exception exc) {
@@ -193,15 +198,15 @@ public class artik_service extends Service {
                         }
                     });
 
-                    try {
-                        //Thread.sleep(1000* 5 * 60);
-                        Thread.sleep(1000* 10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
                     if(!home && !stop){
                         track_location_handler.sendEmptyMessage(1);
+                    }
+
+                    try {
+                        //Thread.sleep(1000* 5 * 60);
+                        Thread.sleep(1000* 5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -219,8 +224,6 @@ public class artik_service extends Service {
 
         unregisterReceiver(mReceiver);
     }
-
-    private get_user_location mget_user_location;
 
     private void updateUserLocation(String userName, String latlng){
         Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -240,13 +243,15 @@ public class artik_service extends Service {
         queue.add(update_user_location_volley);
     }
 
-    private void send_fcm_message(String token, String userName, String schedule_id, Boolean home, String latlng, String message, String channel) throws JSONException {
+    private void send_fcm_message(String sender, String token, String userName, String schedule_id, Boolean home, String latlng, String message, String channel, String participant_tokens) throws JSONException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("user_name", userName);
         jsonObject.put("user_latlng", latlng);
         jsonObject.put("user_message", message);
         jsonObject.put("user_home", home);
+        jsonObject.put("sender_id", sender);
         jsonObject.put("schedule_id", schedule_id);
+        jsonObject.put("participant_tokens", participant_tokens);
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -255,7 +260,7 @@ public class artik_service extends Service {
             }
         };
 
-        send_fcm_message_volley send_fcm_volley = new send_fcm_message_volley(token, jsonObject.toString(), channel,responseListener);
+        send_fcm_message_volley send_fcm_volley = new send_fcm_message_volley(token, jsonObject.toString(), channel, participant_tokens,responseListener);
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(send_fcm_volley);
     }

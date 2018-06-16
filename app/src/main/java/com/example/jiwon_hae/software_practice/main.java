@@ -91,7 +91,6 @@ public class main extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(response);
                         boolean success = jsonObject.getBoolean("success");
 
-
                         if(success){
                             Response.Listener<String> responseListener = new Response.Listener<String>(){
                                 @Override
@@ -110,6 +109,23 @@ public class main extends AppCompatActivity {
                                     }catch (JSONException e) {
                                         e.printStackTrace();
                                     }
+
+                                    Response.Listener<String> token_responseListener = new Response.Listener<String>(){
+                                        @Override
+                                        public void onResponse(String response) {
+                                            try{
+                                                JSONObject jsonObject = new JSONObject(response);
+
+                                            }catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    };
+
+
+                                    update_fcm_token get_schedule_info = new update_fcm_token(getIntent().getStringExtra("user_email"), user_token, token_responseListener);
+                                    RequestQueue queue = Volley.newRequestQueue(main.this);
+                                    queue.add(get_schedule_info);
                                 }
                             };
 
@@ -117,20 +133,6 @@ public class main extends AppCompatActivity {
                             RequestQueue queue = Volley.newRequestQueue(main.this);
                             queue.add(Validate);
 
-                            Response.Listener<String> token_responseListener = new Response.Listener<String>(){
-                                @Override
-                                public void onResponse(String response) {
-                                    try{
-                                        JSONObject jsonObject = new JSONObject(response);
-
-                                    }catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            };
-
-                            update_fcm_token get_schedule_info = new update_fcm_token(getIntent().getStringExtra("user_email"), user_token, token_responseListener);
-                            queue.add(get_schedule_info);
                         }
 
                         try {
@@ -191,7 +193,19 @@ public class main extends AppCompatActivity {
         super.onResume();
 
         try {
-            main_display_adapter = new main_listview_adapter(this, user_id, user_name, user_token, schedule_time_textView, schedule_time_textView_AM_PM);
+            SharedPreferences sharedPreferences = getSharedPreferences("DATABASE", MODE_PRIVATE);
+            try {
+                JSONObject jsonObject = new JSONObject(sharedPreferences.getString("DATABASE", ""));
+                String userName = jsonObject.getString("user_name");
+                String userToken = jsonObject.getString("user_token");
+                String userId = jsonObject.getString("user_email");
+
+                main_display_adapter = new main_listview_adapter(this, userId, userName, userToken, schedule_time_textView, schedule_time_textView_AM_PM);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             main_schedule_display.setAdapter(main_display_adapter);
             main_display_adapter.setCurrent_schedule(schedule_time_textView, schedule_time_textView_AM_PM);
 

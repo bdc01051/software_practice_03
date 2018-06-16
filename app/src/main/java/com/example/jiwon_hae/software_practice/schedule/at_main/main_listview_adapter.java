@@ -19,10 +19,17 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.example.jiwon_hae.software_practice.R;
 import com.example.jiwon_hae.software_practice.artik.service.artik_service;
 import com.example.jiwon_hae.software_practice.drunk_check.drunk_check;
+import com.example.jiwon_hae.software_practice.firebase.volley.get_user_tokens;
 import com.example.jiwon_hae.software_practice.main;
+import com.example.jiwon_hae.software_practice.schedule.create_schedule;
+import com.example.jiwon_hae.software_practice.schedule.volley.create_schedule_volley;
+import com.example.jiwon_hae.software_practice.schedule.volley.join_schedule_volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -79,6 +86,9 @@ public class main_listview_adapter extends BaseAdapter{
         this.userId = userId;
         this.userName = userName;
         this.user_token = user_token;
+
+        Log.e("main", userId + "/" + userName + "/" + user_token);
+
         this.time_display = time_display;
         this.am_pm = am_pm;
     }
@@ -131,50 +141,55 @@ public class main_listview_adapter extends BaseAdapter{
         builder.setPositiveButton("SELECT",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        FirebaseMessaging.getInstance().subscribeToTopic(item.getId());
-
-                        saveCurrent_schedule(item);
-                        try {
-                            setCurrent_schedule(time_display, am_pm);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        Intent start_artik = new Intent(
-                                mContext,//현재제어권자
-                                artik_service.class); // 이동할 컴포넌트
-
-                        start_artik.putExtra("userName", userId);
-                        start_artik.putExtra("userToken", user_token);
-                        start_artik.putExtra("schedule_id", item.getId());
-                        start_artik.putExtra("start_time", item.getEndTime());
-
-                        mContext.startService(start_artik);
-
-
-                        /*if (getDate_today().replace("0", "").equals(item.getDate())) {
+                        if (getDate_today().replace("0", "").equals(item.getDate())) {
+                            FirebaseMessaging.getInstance().subscribeToTopic(item.getId());
                             saveCurrent_schedule(item);
+
+                            saveCurrent_schedule(item);
+
+                            Response.Listener<String> responseListener = new Response.Listener<String>(){
+                                @Override
+                                public void onResponse(String response) {
+
+                                    Response.Listener<String> responseListener = new Response.Listener<String>(){
+                                        @Override
+                                        public void onResponse(String response) {
+
+                                            Intent start_artik = new Intent(
+                                                    mContext,//현재제어권자
+                                                    artik_service.class); // 이동할 컴포넌트
+
+                                            start_artik.putExtra("userName", userId);
+                                            start_artik.putExtra("userToken", user_token);
+                                            start_artik.putExtra("schedule_id", item.getId());
+                                            start_artik.putExtra("start_time", item.getEndTime());
+                                            start_artik.putExtra("participants", item.getParticipants());
+                                            start_artik.putExtra("participants_token", response);
+
+                                            mContext.startService(start_artik);
+                                        }
+                                    };
+
+                                    get_user_tokens get_tokens = new get_user_tokens(item.getParticipants().replace("$", " "), responseListener);
+                                    RequestQueue queue = Volley.newRequestQueue(mContext);
+                                    queue.add(get_tokens);
+                                }
+                            };
+
+                            join_schedule_volley register_schedule_volley = new join_schedule_volley(item.getId(), userId, responseListener);
+                            RequestQueue queue = Volley.newRequestQueue(mContext);
+                            queue.add(register_schedule_volley);
+
+
                             try {
                                 setCurrent_schedule(time_display, am_pm);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
-                            Intent start_artik = new Intent(
-                                    mContext,//현재제어권자
-                                    artik_service.class); // 이동할 컴포넌트
-
-                            start_artik.putExtra("userName", userId);
-                            start_artik.putExtra("userToken", user_token);
-                            start_artik.putExtra("schedule_id", item.getId());
-                            start_artik.putExtra("start_time", item.getEndTime());
-
-                            mContext.startService(start_artik);
                         }else{
                             Toast.makeText(mContext, "오늘 일정이 아닙니다", Toast.LENGTH_SHORT).show();
                         }
-                        */
-
                     }
                 });
 
@@ -187,6 +202,9 @@ public class main_listview_adapter extends BaseAdapter{
         participants.setSelected(true);
 
         participants.setText(item.getParticipants().replace("$", " , "));
+
+        TextView code = view.findViewById(R.id.schedule_code);
+        code.setText("("+item.getId()+")");
 
         TextView date = view.findViewById(R.id.schedule_date);
         date.setText(item.getStartTime());
@@ -344,7 +362,7 @@ public class main_listview_adapter extends BaseAdapter{
     private SharedPreferences schedule_;
     private SharedPreferences.Editor schedule_edit;
 
-    public void saveCurrent_schedule(main_listview_item item){
+    private  void saveCurrent_schedule(main_listview_item item){
         schedule_ = mContext.getSharedPreferences("SCHEDULE", Context.MODE_PRIVATE);
         schedule_edit = schedule_.edit();
 

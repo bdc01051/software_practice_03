@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
@@ -113,7 +114,13 @@ public class firebase_messaging extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(channel);
         }
 
-        notificationManager.notify(notification_id /* ID of notification */, notificationBuilder.build());
+        SharedPreferences sharedPreferences = getSharedPreferences("DATABASE", MODE_PRIVATE);
+        JSONObject jsonObject_user = new JSONObject(sharedPreferences.getString("DATABASE", ""));
+
+        if(!message.getString("sender_id").equals(jsonObject_user.getString("user_email"))){
+           //Log.e("here", "no notification");
+            notificationManager.notify(notification_id /* ID of notification */, notificationBuilder.build());
+        }
     }
 
 }

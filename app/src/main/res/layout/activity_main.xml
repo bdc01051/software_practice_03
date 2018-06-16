@@ -27,14 +27,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Application "
+                android:text="취중"
                 android:textSize="20dp"
                 android:textColor="@color/orange"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name"
+                android:text="고홈"
                 android:textColor="@color/dark_gray"
                 android:textSize="20dp"/>
 
@@ -387,13 +387,13 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/drunk_check"
+                android:id="@+id/set_artik"
                 android:layout_width="13mm"
                 android:layout_height="13mm"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal|bottom"
                 android:layout_marginBottom="14mm"
-                android:text="TIME"
+                android:text="SET"
                 android:textColor="@color/white"
                 android:background="@drawable/set_time_round_btn"/>
 

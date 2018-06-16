@@ -32,7 +32,6 @@ public class main_listview_item {
         return this.venue;
     }
 
-
     public void setTitle(String title){
         this.title = title;
     }

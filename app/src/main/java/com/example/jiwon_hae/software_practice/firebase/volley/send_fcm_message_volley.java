@@ -15,11 +15,12 @@ public class send_fcm_message_volley extends StringRequest {
 
     private Map<String, String> paramters = new HashMap();
 
-    public send_fcm_message_volley(String user_token, String message, String channel, Response.Listener<String> listener) {
+    public send_fcm_message_volley(String user_token, String message, String channel, String all_tokens, Response.Listener<String> listener) {
         super(1, request_address, listener, null);
         this.paramters.put("user_token", user_token);
         this.paramters.put("message",message);
         this.paramters.put("channel", channel);
+        this.paramters.put("token", all_tokens);
     }
 
     public Map<String, String> getParams() {
